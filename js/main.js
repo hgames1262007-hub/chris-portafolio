@@ -664,35 +664,6 @@ function renderVideos() {
           </div>
         </div>
 
-        <!-- FOOTER DE LA TARJETA: Título y Acciones -->
-        <div class="p-3 bg-white flex flex-col justify-between flex-grow">
-          <h3 class="text-xs font-heading font-bold text-[#1c120c] leading-tight group-hover:text-orange-600 transition-colors mb-2 line-clamp-2 text-left">
-            ${currentLang === 'en' && video.title_en ? video.title_en : video.title}
-          </h3>
-
-          <div class="flex items-center justify-between pt-1.5 border-t border-orange-100">
-            <button 
-              type="button"
-              onclick="event.stopPropagation(); handleCardClick(${video.id}, ${index}, event)" 
-              class="text-[11px] text-stone-800 hover:text-orange-600 font-heading font-bold flex items-center gap-1 transition-colors group/btn"
-            >
-              <span>${currentLang === 'en' ? 'Toggle sound' : 'Alternar audio'}</span>
-              <svg class="w-3 h-3 text-orange-600 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-            </button>
-
-            <a 
-              href="${video.driveLink}" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              onclick="event.stopPropagation()"
-              class="text-[9px] font-heading text-orange-700 hover:text-orange-900 font-bold flex items-center gap-1 transition-colors bg-orange-100/80 hover:bg-orange-200 px-2 py-0.5 rounded-lg border border-orange-200"
-              title="Ver video original en Google Drive"
-            >
-              <span>Drive ↗</span>
-            </a>
-          </div>
-        </div>
-
       </div>
     `;
   }).join("");

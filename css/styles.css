@@ -725,11 +725,13 @@ dialog::backdrop {
   background-color: #0c0a09;
   position: relative;
   overflow: hidden;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
 }
 
 /* Tarjeta especial de Collabs Pendientes al final del carrusel (Diseño Elegante y Limpio) */
 .carousel-3d-card.pending-collabs-card {
-  height: calc(280px * 16 / 9 + 115px);
+  height: calc(280px * 16 / 9 + 54px);
   background: #ffffff;
   border: 1.5px solid rgba(234, 88, 12, 0.25);
   box-shadow: 0 18px 45px -10px rgba(28, 18, 12, 0.12), 0 2px 8px rgba(234, 88, 12, 0.04);
@@ -774,7 +776,7 @@ dialog::backdrop {
     width: 295px;
   }
   .carousel-3d-card.pending-collabs-card {
-    height: calc(295px * 16 / 9 + 115px);
+    height: calc(295px * 16 / 9 + 54px);
   }
 }
 

@@ -251,7 +251,7 @@ const portfolioVideos = [
     format: "TikTok 9:16",
     logoSrc: "assets/brands/sellitems-favicon.ico",
     driveLink: "https://drive.google.com/file/d/13WH1dmTemyAOHpNAzGIOiQXihuD_mRls/view?usp=drivesdk",
-    videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+    videoSrc: "assets/videos/Sellitems.mp4"
   },
   {
     id: 3,
@@ -266,7 +266,7 @@ const portfolioVideos = [
     format: "TikTok 9:16",
     logoSrc: "assets/brands/roswap-favicon.ico",
     driveLink: "https://drive.google.com/file/d/17PM-JkoNBTshEhseKej2a5O5QX2Tyz3b/view?usp=drivesdk",
-    videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    videoSrc: "assets/videos/roswaps.mp4"
   },
   {
     id: 4,
@@ -281,7 +281,7 @@ const portfolioVideos = [
     format: "Shorts 9:16",
     logoHtml: `<div class="w-full h-full rounded-lg bg-[#0c0a09] border border-red-600/50 flex items-center justify-center select-none font-heading font-black tracking-tight text-white leading-none shadow-xs"><span class="text-[10px]">MM</span><span class="text-red-500 text-[12px] font-black ml-0.5 transform -translate-y-px">2</span></div>`,
     driveLink: "https://drive.google.com/file/d/1R0I9pTIvSSPnb5msRJ8iOEZT6HLmw1qN/view?usp=drivesdk",
-    videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    videoSrc: "assets/videos/Mm2shop.mp4"
   },
   {
     id: 5,
@@ -296,7 +296,7 @@ const portfolioVideos = [
     format: "TikTok 9:16",
     logoSrc: "assets/brands/bloxswaps-favicon.ico",
     driveLink: "https://drive.google.com/file/d/1XRuCfoU-_AkR2jTE8Q2JPqQgoQU3WERR/view?usp=drivesdk",
-    videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    videoSrc: "assets/videos/Bloxswaps.mp4"
   },
   {
     id: 6,

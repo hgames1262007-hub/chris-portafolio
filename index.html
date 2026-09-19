@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChrisMm2 • Video Ads & Promotions for Roblox Stores</title>
+  <meta name="description" content="Content creator for Roblox stores and gaming brands (TikTok, Shorts). Highly engaged community of +610,000 followers. Proven results, trust and high conversion.">
+
+  <!-- Preconnect y Google Fonts: Plus Jakarta Sans, Outfit, DM Sans, Instrument Serif, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400..900;1,400..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+            heading: ['"Outfit"', 'system-ui', 'sans-serif'],
+            display: ['"Outfit"', 'system-ui', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            outfit: ['"Outfit"', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              black: '#090604',
+              brown: '#160e09',
+              card: '#1c120c',
+              orange: '#ea580c',
+              glow: '#f97316'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Lenis Smooth Scroll Engine (Desplazamiento suave con inercia cinematográfica) -->
+  <script src="js/lenis.min.js"></script>
+
+  <!-- Estilos limpios y minimalistas -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#faf8f5] text-[#1c120c] antialiased min-h-screen selection:bg-orange-500 selection:text-white relative font-sans overflow-x-hidden">
+
+  <!-- BARRA DE PROGRESO SUPERIOR CONTINUA -->
+  <div class="top-progress-bar" id="topProgressBar"></div>
+
+  <!-- CANVAS DE ASCUAS / PARTÍCULAS DORADAS SOLARES -->
+  <canvas id="embers"></canvas>
+
+  <!-- MÚSICA DE FONDO AMBIENTAL OFICIAL (Volumen sutil, loop continuo y atenuación inteligente) -->
+  <audio id="bg-music" src="assets/audio/bg-music.mp3" loop preload="auto" class="hidden"></audio>
+
+  <!-- BANNER BACKDROP OFICIAL DE CHRIS (100% Panorámico, sin cortes y con transición de scroll) -->
+  <div class="chris-hero-banner" id="chrisHeroBanner" aria-hidden="true">
+    <div class="chris-hero-banner-img"></div>
+    <div class="chris-hero-banner-overlay"></div>
+  </div>
+
+  <!-- Floating Island Glass Dock Header (Frosted Glassmorphism 2.0 Cápsula Flotante) -->
+  <header class="site-header-floating-wrap">
+    <div class="site-header-dock">
+      
+      <!-- Brand & Creator Avatar -->
+      <a href="#" class="flex items-center gap-2.5 group select-none">
+        <div class="header-creator-avatar">
+          <img src="assets/chris-avatar-square.png" alt="ChrisMm2 Creator Avatar">
+          <span class="header-avatar-status" title="Online & Disponible"></span>
+        </div>
+        <div class="leading-tight">
+          <div class="font-heading font-black text-[#1c120c] text-xs sm:text-sm tracking-tight flex items-center gap-1.5">
+            <span>CHRIS</span>
+            <span class="text-[9.5px] font-heading font-bold text-orange-700 bg-orange-100/90 px-1.5 py-0.5 rounded-full border border-orange-300/80">Chrixmm2</span>
+          </div>
+          <div class="text-[9.5px] sm:text-[10px] text-stone-500 font-heading font-semibold tracking-wide hidden sm:block" data-i18n="nav.subtitle">VIDEOS PARA TIENDAS DE ROBLOX</div>
+        </div>
+      </a>
+
+      <!-- Center: Segmented Navigation Dock (Interactive Pills with Glass Effect) -->
+      <nav class="hidden lg:flex nav-segmented-dock" aria-label="Navegación principal">
+        <a href="#tiendas" class="nav-dock-item is-active" data-section="tiendas">
+          <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+          <span data-i18n="nav.videos">Videos</span>
+        </a>
+        <a href="#impacto" class="nav-dock-item" data-section="impacto" data-i18n="nav.metrics">Métricas</a>
+        <a href="#marcas" class="nav-dock-item" data-section="marcas" data-i18n="nav.brands">Marcas</a>
+        <a href="#pagos" class="nav-dock-item" data-section="pagos" data-i18n="nav.payments">Pagos</a>
+        <a href="#contacto" class="nav-dock-item" data-section="contacto" data-i18n="nav.contact">Contacto</a>
+      </nav>
+
+      <!-- Right: Unified Action Dock (Lang, Equalizer Sound Chip, Status, Contact) -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <!-- Bilingual Switcher Pill [ES | EN] -->
+        <div class="lang-switch-wrap" id="langSwitch" role="group" aria-label="Select language / Seleccionar idioma">
+          <button type="button" class="lang-btn" data-lang="es" aria-label="Español">ES</button>
+          <button type="button" class="lang-btn is-active" data-lang="en" aria-label="English">EN</button>
+        </div>
+
+        <!-- Dynamic Equalizer Sound Toggle Button -->
+        <button class="sound-chip is-active hidden sm:inline-flex" id="soundBtn" aria-label="Activar o desactivar sonido de ambiente">
+          <span>🔊</span>
+          <span class="sound-equalizer" aria-hidden="true">
+            <span class="sound-eq-bar sound-eq-bar-1"></span>
+            <span class="sound-eq-bar sound-eq-bar-2"></span>
+            <span class="sound-eq-bar sound-eq-bar-3"></span>
+          </span>
+          <span data-i18n="sound.btn">SONIDO ON</span>
+        </button>
+
+        <!-- Live Status Pill -->
+        <span class="nav-availability-badge hidden md:inline-flex">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span data-i18n="nav.available">Disponible</span>
+        </span>
+
+        <!-- Contact CTA Pill Button -->
+        <a href="#contacto" class="btn-header-contact btn-shimmer" data-i18n="nav.contactBtn">
+          <span>Contactar</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION (Estética Luminosa, Cálida y de Alto Impacto Auténtica de Chris) -->
+  <section class="pt-10 pb-6 px-4 sm:px-6 max-w-5xl mx-auto text-center relative">
+    
+    <!-- Marca de agua tipográfica sutil flotante en el fondo -->
+    <div class="hero-bg-watermark select-none pointer-events-none" aria-hidden="true">CHRIXMM2</div>
+
+    <div class="relative z-10 flex flex-col items-center">
+      
+      <!-- Perfil del Creador: Avatar Circular con Anillos Orbitales Cálidos y Badge Oficial -->
+      <div class="relative mb-5 flex items-center justify-center">
+        <div class="relative w-28 h-28 sm:w-36 sm:h-36 flex items-center justify-center">
+          <!-- Anillos orbitales concéntricos -->
+          <div class="creator-orbit-ring ring-outer">
+            <span class="orbit-planet-bead bead-1"></span>
+          </div>
+          <div class="creator-orbit-ring ring-inner">
+            <span class="orbit-planet-bead bead-2"></span>
+          </div>
+          <!-- Imagen de Chris con resplandor cálido -->
+          <div class="w-full h-full rounded-full overflow-hidden p-1.5 bg-gradient-to-tr from-orange-500 via-amber-400 to-yellow-300 shadow-2xl shadow-orange-500/30 relative z-10">
+            <div class="w-full h-full rounded-full overflow-hidden bg-[#1c120c] border-2 border-white">
+              <img src="assets/chris-avatar-square.png" alt="ChrisMm2 Creador Oficial" class="w-full h-full object-cover">
+            </div>
+          </div>
+          <!-- Badge En Línea flotante -->
+          <div class="absolute -bottom-1 -right-1 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-[#1c120c] shadow-lg border border-orange-200 font-heading font-black text-[11px]">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span data-i18n="hero.online">En línea</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge de Estado Luminoso -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/95 border border-orange-200/90 text-xs font-heading font-black text-orange-950 mb-4 shadow-sm backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>CHRIXMM2</span>
+        <span class="text-stone-300">•</span>
+        <span class="text-orange-700" data-i18n="hero.creator">CREADOR DE CONTENIDO</span>
+        <span class="text-stone-300">•</span>
+        <span class="text-emerald-700 font-extrabold" data-i18n="hero.accepting">🟢 Aceptando Tiendas</span>
+      </div>
+
+      <!-- Titular Principal Auténtico de Gran Presencia (Sin copias ajenas) -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black font-display text-[#1c120c] tracking-tight leading-[1.08] max-w-4xl mx-auto mb-5" data-i18n="hero.title">
+        Conecto tiendas y marcas con la comunidad más activa de <span class="font-serif italic font-normal text-[1.12em] bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 bg-clip-text text-transparent">Roblox</span>.
+      </h1>
+
+      <!-- Párrafo Introductorio Auténtico de Chris -->
+      <p class="text-base sm:text-lg text-stone-700 max-w-2xl mx-auto leading-relaxed font-medium mb-8" data-i18n="hero.intro">
+        ¡Hola! Soy Chris (<span class="font-bold text-[#1c120c] font-heading">@chrixmm2</span>). Creo contenido diario y dinámicas de alto impacto para miles de jugadores de Roblox. Ayudo a tiendas virtuales y páginas a darse a conocer de forma orgánica, ganando la confianza de una comunidad activa de más de <span class="text-orange-600 font-extrabold font-heading">+610,000</span> seguidores.
+      </p>
+
+      <!-- Botones Principales de Llamada a la Acción (Pill Buttons) -->
+      <div class="flex flex-wrap items-center justify-center gap-3.5 mb-8 z-10">
+        <a href="#tiendas" class="btn-shimmer px-8 py-3.5 rounded-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-500 hover:to-amber-400 text-white font-heading font-extrabold text-sm tracking-wide transition-all flex items-center gap-2.5 shadow-xl shadow-orange-500/30 hover:scale-105">
+          <span data-i18n="hero.ctaVideos">Ver videos de tiendas</span>
+          <svg class="w-4 h-4 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </a>
+        <a href="#contacto" class="btn-shimmer px-8 py-3.5 rounded-full bg-white hover:bg-orange-50/80 text-[#1c120c] border border-orange-200/90 font-heading font-bold text-sm tracking-wide transition-all flex items-center gap-2.5 shadow-md shadow-orange-950/5 hover:scale-105">
+          <i data-lucide="send" class="w-4 h-4 text-orange-600"></i>
+          <span data-i18n="hero.ctaContact">Enviar Propuesta Directa</span>
+        </a>
+      </div>
+
+      <!-- Redes Sociales Oficiales: Escaparate de Audiencia Verificada (Luminoso) -->
+      <div class="w-full max-w-4xl pt-6 border-t border-orange-200/80 z-10">
+        <div class="text-xs font-heading font-black text-stone-500 uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+          <span data-i18n="hero.communityTitle">COMUNIDAD &amp; REDES OFICIALES</span>
+          <span class="text-stone-300">•</span>
+          <span class="text-orange-600 font-extrabold" data-i18n="hero.verifiedAudience">AUDIENCIA VERIFICADA</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 max-w-3xl mx-auto gap-3.5 sm:gap-4">
+          
+          <!-- 1. TIKTOK -->
+          <a href="https://www.tiktok.com/@chrix.mm2?_r=1&_t=ZS-99pvCI0pyA3" target="_blank" rel="noopener noreferrer" class="social-hero-card group p-5 rounded-2xl bg-white/95 border border-orange-200/80 hover:border-stone-900 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-stone-900 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="w-12 h-12 rounded-2xl bg-stone-900 text-white flex items-center justify-center mb-2.5 shadow-md group-hover:scale-110 transition-all">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </div>
+            <div class="text-xs font-heading font-black text-[#1c120c] mb-0.5">TikTok</div>
+            <div class="text-[10px] text-stone-500 font-heading font-semibold mb-2">@chrix.mm2</div>
+            <div class="w-full pt-2 border-t border-orange-100 flex flex-col items-center">
+              <span class="text-base sm:text-lg font-black font-display text-orange-600 tracking-tight">301.7K</span>
+              <span class="text-[9px] font-heading font-extrabold uppercase tracking-wider text-stone-500" data-i18n="social.tiktokSub">Seguidores • 6.6M Likes</span>
+            </div>
+          </a>
+
+          <!-- 2. YOUTUBE -->
+          <a href="https://www.youtube.com/@Chrixmm2" target="_blank" rel="noopener noreferrer" class="social-hero-card group p-5 rounded-2xl bg-white/95 border border-orange-200/80 hover:border-red-600 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-red-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center mb-2.5 shadow-md group-hover:scale-110 transition-all">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <div class="text-xs font-heading font-black text-[#1c120c] mb-0.5">YouTube</div>
+            <div class="text-[10px] text-stone-500 font-heading font-semibold mb-2">@Chrixmm2</div>
+            <div class="w-full pt-2 border-t border-orange-100 flex flex-col items-center">
+              <span class="text-base sm:text-lg font-black font-display text-red-600 tracking-tight">295K</span>
+              <span class="text-[9px] font-heading font-extrabold uppercase tracking-wider text-stone-500" data-i18n="social.youtubeSub">Suscriptores • 148 Videos</span>
+            </div>
+          </a>
+
+          <!-- 3. ROBLOX -->
+          <a href="https://www.roblox.com/search/users?keyword=chrixmm2" target="_blank" rel="noopener noreferrer" class="social-hero-card group p-5 rounded-2xl bg-white/95 border border-orange-200/80 hover:border-[#1c120c] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-[#1c120c] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="w-12 h-12 rounded-2xl bg-[#1c120c] text-white flex items-center justify-center mb-2.5 shadow-md group-hover:scale-110 transition-all">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M5.166 0L0 18.834l18.834 5.166L24 5.166 5.166 0zm9.414 14.77l-4.184-1.148 1.148-4.184 4.184 1.148-1.148 4.184z"/></svg>
+            </div>
+            <div class="text-xs font-heading font-black text-[#1c120c] mb-0.5">Roblox</div>
+            <div class="text-[10px] text-stone-500 font-heading font-semibold mb-2">@Chrixxmm2</div>
+            <div class="w-full pt-2 border-t border-orange-100 flex flex-col items-center">
+              <span class="text-base sm:text-lg font-black font-display text-stone-800 tracking-tight">13.7K</span>
+              <span class="text-[9px] font-heading font-extrabold uppercase tracking-wider text-stone-500" data-i18n="social.robloxSub">Seguidores • Verificado</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECCIÓN CLAVE: PORTAFOLIO DE VIDEOS DE ROBLOX & TIENDAS (PINNED HORIZONTAL SCROLL)
+       ========================================================================== -->
+  <section id="tiendas" class="relative">
+    
+    <!-- Pista de scroll continuo para el efecto de zoom en capas y carrusel -->
+    <div id="carousel-scroll-container" class="mixpanel-portal-track">
+      
+      <!-- Contenedor Sticky fijo a pantalla completa -->
+      <div id="carousel-sticky-wrapper" class="mixpanel-portal-sticky">
+
+        <!-- Indicador flotante superior -->
+        <div id="portalScrollHint" class="portal-scroll-hint">
+          <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+          <span data-i18n="portal.scrollHint">Desliza para explorar las campañas de tiendas en video</span>
+          <svg class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </div>
+
+        <!-- Viewport de las Capas Concéntricas y Escenario de Videos -->
+        <div class="mixpanel-portal-viewport">
+          
+          <!-- Escenario Central (AL FONDO / DETRÁS DE LAS CAPAS - EFECTO PROFUNDIDAD) -->
+          <div id="portalStageCard" class="portal-stage-core py-3 sm:py-5 px-3 sm:px-6 md:px-8 lg:px-10 flex flex-col justify-center items-center gap-2 sm:gap-3.5">
+            
+            <!-- Encabezado del Carrusel dentro del Escenario (Fijo y centrado arriba, sin colisiones) -->
+            <div id="portalHeaderBlock" class="portal-header-block w-full flex-shrink-0 mx-auto text-center">
+              
+              <!-- Badge de Trabajos Anteriores -->
+              <div class="portal-badge-wrap flex items-center justify-center mb-1">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-100 border border-orange-300 text-[10px] font-heading font-black text-orange-800 uppercase tracking-wider shadow-2xs">
+                  <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+                  <span data-i18n="portal.badge">TRABAJOS ANTERIORES &amp; CAMPAÑAS OFICIALES</span>
+                </div>
+              </div>
+
+              <!-- Titular Principal del Carrusel -->
+              <h2 class="portal-header-title text-base sm:text-xl md:text-2xl font-black font-heading text-[#1c120c] tracking-tight mb-2.5 text-center" data-i18n="portal.title">
+                Algunos ejemplos de mi trabajo de tiendas o sitios con los que he trabajado
+              </h2>
+            </div>
+
+            <!-- Contenedor 3D Cover Flow de Videos con Profundidad -->
+            <div class="carousel-3d-viewport w-full relative">
+              <div id="carousel-track" class="carousel-3d-stage">
+                <!-- Los videos se renderizan con JavaScript -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Grupo Unificado de Capas Concéntricas (SE MANTIENEN 100% UNIDAS, NUNCA SE SEPARAN) -->
+          <div id="portalArchGroup" class="portal-arch-group">
+            <!-- Capa 10: Blanco Puro Transición Suave Interior -->
+            <div id="portalArch10" class="portal-arch-ring portal-arch-10"></div>
+
+            <!-- Capa 9: Crema Mantequilla Suave -->
+            <div id="portalArch9" class="portal-arch-ring portal-arch-9"></div>
+
+            <!-- Capa 8: Amarillo Amanecer Pálido -->
+            <div id="portalArch8" class="portal-arch-ring portal-arch-8"></div>
+
+            <!-- Capa 7: Miel Dorada Radiante -->
+            <div id="portalArch7" class="portal-arch-ring portal-arch-7"></div>
+
+            <!-- Capa 6: Oro Solar Cálido -->
+            <div id="portalArch6" class="portal-arch-ring portal-arch-6"></div>
+
+            <!-- Capa 5: Ámbar Atardecer -->
+            <div id="portalArch5" class="portal-arch-ring portal-arch-5"></div>
+
+            <!-- Capa 4: Naranja Coral Cálido -->
+            <div id="portalArch4" class="portal-arch-ring portal-arch-4"></div>
+
+            <!-- Capa 3: Llama Naranja Solar -->
+            <div id="portalArch3" class="portal-arch-ring portal-arch-3"></div>
+
+            <!-- Capa 2: Óxido Naranja Intenso -->
+            <div id="portalArch2" class="portal-arch-ring portal-arch-2"></div>
+
+            <!-- Capa 1: Fuego Terracota Profundo Exterior -->
+            <div id="portalArch1" class="portal-arch-ring portal-arch-1"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       MIXPANEL-STYLE STAGGERED BENTO DASHBOARD (#impacto)
+       ========================================================================== -->
+  <section id="impacto" class="py-16 px-4 sm:px-6 max-w-6xl mx-auto text-center relative reveal-on-scroll">
+    <div class="mb-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100 border border-orange-300 text-xs font-heading font-bold text-orange-800 uppercase tracking-widest mb-2 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+        <span data-i18n="metrics.badge">MÉTRICAS &amp; IMPACTO REAL</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black font-display text-[#1c120c] tracking-tight mb-3" data-i18n="metrics.title">
+        De reproducciones a <span class="font-serif italic font-normal text-[1.1em] bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 bg-clip-text text-transparent">compradores activos</span>
+      </h2>
+      <p class="text-xs sm:text-base text-stone-700 max-w-2xl mx-auto font-medium" data-i18n="metrics.sub">
+        Estrategia de gancho en los primeros 3 segundos y retención alta diseñada para convertir visitantes de Roblox en clientes para tu tienda.
+      </p>
+    </div>
+
+    <!-- Grid Bento Estilo Mixpanel -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 text-left">
+      
+      <!-- Bento 1 (Span 2): Métrica Principal +610K Vistas con Gráfico Profesional de Alto Impacto -->
+      <div id="social-proof-card" class="bento-card lg:col-span-2 p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden reveal-on-scroll bg-white/95 border border-orange-200/80 shadow-lg shadow-orange-950/5">
+        <div class="absolute -right-8 -bottom-8 w-56 h-56 bg-gradient-to-tr from-orange-400/10 via-amber-400/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Encabezado del Dashboard -->
+        <div>
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-orange-600 animate-pulse"></span>
+              <span class="text-xs font-heading font-black text-orange-700 uppercase tracking-wider" data-i18n="metrics.socialProof">Social Proof &amp; Rendimiento de Campañas</span>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-heading font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span data-i18n="metrics.growth">+34.8% Crecimiento Orgánico</span>
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-baseline gap-3 mb-1">
+            <div class="text-4xl sm:text-6xl font-black font-display text-[#1c120c] tracking-tight">
+              <span id="counter-audience" data-target="610000">+610,000</span>
+            </div>
+            <span class="text-xs font-heading font-bold text-orange-600 bg-orange-100/90 px-2.5 py-0.5 rounded-lg border border-orange-200" data-i18n="metrics.audienceLabel">
+              Audiencia Activa Verificada
+            </span>
+          </div>
+
+          <div class="text-xs sm:text-sm font-heading font-semibold text-stone-600 mb-5" data-i18n="metrics.audienceDesc">
+            Alcance combinado diario en TikTok (301.7K) • YouTube (295K) • Roblox (13.7K) • Más de 6.6M de likes
+          </div>
+        </div>
+
+        <!-- Dashboard Analytics Chart Profesional (Líneas guía, Ejes Y/X, Área y Tooltip) -->
+        <div class="w-full mb-5 relative bg-gradient-to-b from-orange-50/25 to-white p-3 sm:p-4 rounded-2xl border border-orange-100/90">
+          
+          <!-- Badge Tooltip Flotante de Pico -->
+          <div class="absolute top-2 right-4 sm:right-6 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1c120c] text-white shadow-md border border-orange-500/30 text-[10px] font-heading font-bold">
+            <span class="w-1.5 h-1.5 rounded-full bg-orange-400 animate-ping"></span>
+            <span data-i18n="metrics.chartPeak">Pico Actual: <strong class="text-amber-300 font-extrabold">+610K Comunidad</strong></span>
+          </div>
+
+          <div class="h-32 sm:h-36 w-full relative flex items-end">
+            <svg class="w-full h-full overflow-visible viral-growth-svg" viewBox="0 0 500 130" fill="none" preserveAspectRatio="none">
+              <defs>
+                <!-- Gradiente de Área bajo la curva -->
+                <linearGradient id="pro-chart-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ea580c" stop-opacity="0.28"/>
+                  <stop offset="65%" stop-color="#f97316" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#ea580c" stop-opacity="0.0"/>
+                </linearGradient>
+                <!-- Gradiente del trazo -->
+                <linearGradient id="pro-chart-stroke" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#f97316"/>
+                  <stop offset="50%" stop-color="#ea580c"/>
+                  <stop offset="100%" stop-color="#dc2626"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Líneas Guía Horizontales de Referencia (Y-Axis) -->
+              <line x1="45" y1="18" x2="495" y2="18" stroke="rgba(234, 88, 12, 0.10)" stroke-dasharray="3 4"/>
+              <text x="36" y="21" font-size="9" fill="#9ca3af" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="end">600K</text>
+
+              <line x1="45" y1="52" x2="495" y2="52" stroke="rgba(234, 88, 12, 0.10)" stroke-dasharray="3 4"/>
+              <text x="36" y="55" font-size="9" fill="#9ca3af" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="end">400K</text>
+
+              <line x1="45" y1="86" x2="495" y2="86" stroke="rgba(234, 88, 12, 0.10)" stroke-dasharray="3 4"/>
+              <text x="36" y="89" font-size="9" fill="#9ca3af" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="end">200K</text>
+
+              <line x1="45" y1="116" x2="495" y2="116" stroke="rgba(234, 88, 12, 0.14)"/>
+              <text x="36" y="119" font-size="9" fill="#9ca3af" font-family="'Outfit', sans-serif" font-weight="700" text-anchor="end">0</text>
+
+              <!-- Área sombreada profesional bajo la curva -->
+              <path class="viral-curve-area" d="M 45 106 Q 130 102, 190 84 T 330 46 T 485 14 L 485 116 L 45 116 Z" fill="url(#pro-chart-fill)"/>
+
+              <!-- Trazo de la curva de crecimiento viral -->
+              <path class="viral-curve-stroke" d="M 45 106 Q 130 102, 190 84 T 330 46 T 485 14" stroke="url(#pro-chart-stroke)" stroke-width="3.5" stroke-linecap="round"/>
+
+              <!-- Hitos y Nodos de Campañas sobre la curva -->
+              <circle cx="190" cy="84" r="3.5" fill="#f97316" stroke="#ffffff" stroke-width="2"/>
+              <circle cx="330" cy="46" r="3.5" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+
+              <!-- Beacon pulsante en el punto culminante actual (+610K) -->
+              <g class="viral-beacon-group" transform="translate(485, 14)">
+                <circle class="viral-beacon-ping" r="8" fill="#ea580c" opacity="0.4"/>
+                <circle class="viral-beacon-core" r="4.5" fill="#ea580c" stroke="#ffffff" stroke-width="2.5"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Etiquetas del Eje X (Línea de Tiempo) -->
+          <div class="flex justify-between items-center text-[10px] font-heading font-bold text-stone-500 pt-2 px-1 border-t border-orange-100/70">
+            <span data-i18n="metrics.t1">T1: Lanzamiento</span>
+            <span data-i18n="metrics.t2">T2: Tracción Orgánica</span>
+            <span data-i18n="metrics.t3">T3: Alianzas Tiendas</span>
+            <span class="text-orange-600 font-black" data-i18n="metrics.t4">Hoy: +610K Activo</span>
+          </div>
+        </div>
+
+        <!-- 2 Tarjetas de Métricas de Alto Impacto -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3 border-t border-orange-100">
+          <div class="p-3.5 rounded-xl bg-orange-50/40 border border-orange-200/60">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-heading font-extrabold text-stone-500 uppercase" data-i18n="metrics.retention">Retención a los 3s</span>
+              <span class="text-[9px] font-heading font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded" data-i18n="metrics.retentionSub">+14% vs promedio</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-black font-heading text-emerald-600 mb-1.5">
+              <span class="stat-counter" data-target="92.4" data-suffix="%">92.4%</span>
+            </div>
+            <div class="w-full h-1.5 bg-emerald-100 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 rounded-full w-[92.4%]"></div>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-orange-50/40 border border-orange-200/60">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-heading font-extrabold text-stone-500 uppercase" data-i18n="metrics.guarantee">Garantía Total</span>
+              <span class="text-[9px] font-heading font-black text-blue-700 bg-blue-100 px-1.5 py-0.2 rounded" data-i18n="metrics.guaranteeSub">100% Verificado</span>
+            </div>
+            <div class="text-xl sm:text-2xl font-black font-heading text-blue-600 mb-1.5" data-i18n="metrics.compliance">
+              100% Cumplimiento
+            </div>
+            <div class="w-full h-1.5 bg-blue-100 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500 rounded-full w-[100%]"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento 2: Carta de Presentación Oficial de Chris (Abarca toda la tarjeta con tipografía moderna) -->
+      <div class="bento-card bento-quote-card lg:col-span-1 p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-white via-orange-50/30 to-amber-50/40 reveal-on-scroll delay-150">
+        <!-- Resplandor sutil de fondo -->
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-orange-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="flex flex-col h-full justify-between gap-4">
+          <!-- Top: Avatar & Identidad -->
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-md flex-shrink-0 bg-[#1c120c] p-0.5">
+                <img src="assets/chris-avatar-square.png" alt="Chris" class="w-full h-full object-cover rounded-xl">
+              </div>
+              <div>
+                <div class="font-heading font-black text-sm text-[#1c120c] flex items-center gap-1.5">
+                  <span>Chris</span>
+                  <span class="text-[10px] font-heading font-extrabold text-orange-700 bg-orange-100 px-1.5 py-0.5 rounded border border-orange-300" data-i18n="bento.official">Oficial</span>
+                </div>
+                <div class="text-[11px] text-stone-500 font-heading font-bold" data-i18n="bento.creator">@Chrixmm2 • Creador de Contenido</div>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 text-[10px] font-heading font-black text-emerald-700 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span data-i18n="bento.slots">Cupos 2/3</span>
+            </span>
+          </div>
+
+          <!-- Declaración / Cita Oficial de Chris -->
+          <div class="relative py-1">
+            <span class="quote-symbol select-none leading-none font-serif text-4xl text-orange-400/40 block -mb-3">“</span>
+            <p class="text-sm sm:text-[15px] font-medium text-[#1c120c] font-sans leading-relaxed" data-i18n="bento.quote">
+              Multiplico el alcance y las ventas de tiendas de Roblox creando <span class="font-bold text-orange-700">videos de alta retención</span> que conectan de verdad con la comunidad y <span class="font-serif italic text-base text-stone-900">convierten visitas en compras</span>.
+            </p>
+          </div>
+
+          <!-- Pilares Clave de Creación de Contenido -->
+          <div class="space-y-3.5 my-auto">
+            <div class="p-3 sm:p-3.5 rounded-xl bg-white/90 border border-orange-200/80 flex items-start gap-3 shadow-2xs">
+              <div class="w-7 h-7 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">
+                🎯
+              </div>
+              <div class="text-xs">
+                <div class="font-heading font-black text-sm text-[#1c120c]" data-i18n="bento.hookTitle">Hooks Virales de 3s</div>
+                <div class="text-stone-500 font-medium text-[11px] mt-0.5" data-i18n="bento.hookDesc">Máxima retención y dinamismo para TikTok y Shorts.</div>
+              </div>
+            </div>
+
+            <div class="p-3 sm:p-3.5 rounded-xl bg-white/90 border border-orange-200/80 flex items-start gap-3 shadow-2xs">
+              <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 text-sm mt-0.5">
+                💎
+              </div>
+              <div class="text-xs">
+                <div class="font-heading font-black text-sm text-[#1c120c]" data-i18n="bento.buyerTitle">Audiencia Compradora</div>
+                <div class="text-stone-500 font-medium text-[11px] mt-0.5" data-i18n="bento.buyerDesc">Público activo en Roblox dispuesto a adquirir Robux e ítems.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer de la Tarjeta Bento 2 -->
+          <div class="pt-3 border-t border-orange-200/70 flex items-center justify-between text-xs font-heading font-bold text-stone-600">
+            <div class="flex items-center gap-1.5 text-[11px]">
+              <span class="text-stone-400" data-i18n="bento.channels">Canales:</span>
+              <span class="text-orange-700 font-extrabold">TikTok • YouTube</span>
+            </div>
+            <span class="text-[10px] font-heading font-extrabold text-amber-800 bg-amber-100/90 px-2.5 py-0.5 rounded-md border border-amber-300" data-i18n="bento.quality">
+              ⭐ 100% Calidad
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECCIÓN DE MARCAS LÍDERES (#marcas) - TEMA LUZ PROFESIONAL
+       ========================================================================== -->
+  <section id="marcas" class="py-20 px-4 sm:px-6 relative select-none reveal-on-scroll">
+
+    <div class="max-w-6xl mx-auto relative z-10 text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100/90 border border-orange-200 text-xs font-heading font-extrabold text-orange-800 uppercase tracking-widest mb-3 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+        <span data-i18n="marcas.badge">CONFIANZA &amp; TRAYECTORIA</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black font-heading text-[#1c120c] tracking-tight mb-3" data-i18n="marcas.title">
+        Marcas conformes con el <span class="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 bg-clip-text text-transparent">trabajo de Chris</span>
+      </h2>
+      <p class="text-xs sm:text-base text-stone-600 max-w-2xl mx-auto font-medium" data-i18n="marcas.sub">
+        Campañas publicitarias oficiales para los mayores marketplaces, tiendas de ítems MM2 y plataformas de Robux.
+      </p>
+    </div>
+
+    <!-- Carrusel Marquee de Marcas de Gran Escala y Prestigio -->
+    <div class="marquee-container relative z-10">
+      <!-- Pista 1 (Activa / Accesible) -->
+      <div class="marquee-track">
+        <!-- 1. Bonoxs -->
+        <a href="https://bonoxs.com/ve" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-yellow-400/80 shadow-sm hover:shadow-xl hover:shadow-yellow-500/15 transition-all duration-300 hover:scale-105" title="Bonoxs">
+          <svg class="h-10 sm:h-12 w-auto drop-shadow-sm group-hover:scale-105 transition-transform" viewBox="0 0 131 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="131" height="30" rx="4" fill="#FFFF00"/>
+            <path d="M63.0366 6.16113H61.5868L60.4963 7.24649L60.4832 17.7296L48.8594 6.19363H47.7754L46.6848 7.27898V22.435L47.7754 23.5203H49.2316L50.3156 22.435V12.6343L61.5868 23.5203H63.0366L64.1271 22.435V7.24649L63.0366 6.16113Z" fill="#020202"/>
+            <path d="M22.8625 6.16113H6.51074V23.5203H22.8625L23.953 22.435V18.4575L20.3157 14.844L23.953 11.224V7.24649L22.8625 6.16113ZM20.3222 19.8938H10.1416V16.6572H17.4097L20.3222 19.5493V19.8938V19.8938ZM20.3222 10.1386L17.4163 13.0307H10.1416V9.79415H20.3157V10.1386H20.3222Z" fill="#020202"/>
+            <path d="M83.9333 6.16113H68.6721L67.5815 7.24649V22.435L68.6721 23.5203H83.9333L85.0238 22.435V7.24649L83.9333 6.16113ZM81.393 19.9068H71.2189V10.1386V9.77465H81.393V19.9068Z" fill="#020202"/>
+            <path d="M120.64 13.1932L111.915 13.2062L110.466 11.7634V11.224L111.915 9.78115L122.455 9.79415L123.546 8.69579V7.24649L122.455 6.16113H110.466L106.828 9.78115V13.1022L110.1 16.4818L119.184 16.4688L120.64 17.9116V18.451L119.19 19.8938L107.919 19.8808L106.828 20.9792V22.4285L107.919 23.5138H120.64L124.271 19.9068V16.6507L120.64 13.1932Z" fill="#020202"/>
+            <path d="M105.006 8.69579V7.24649L103.916 6.16113H102.46L96.2884 12.3093L90.1108 6.16113H88.6611L87.5706 7.24649V8.69579L93.7482 14.8375L87.5706 20.9922V22.435L88.6611 23.5138H90.1043L96.2884 17.3656L102.466 23.5138H103.916L105.006 22.435V20.9922L98.8287 14.8375L105.006 8.69579Z" fill="#020202"/>
+            <path d="M35.0544 5.40076C29.8171 5.40076 25.5659 9.62519 25.5659 14.844C25.5659 20.0563 29.8106 24.2872 35.0544 24.2872C40.2916 24.2872 44.5428 20.0628 44.5428 14.844C44.5428 9.62519 40.2982 5.40076 35.0544 5.40076ZM35.0544 20.3878C31.9786 20.3878 29.4841 17.9051 29.4841 14.844C29.4841 11.7829 31.9786 9.30024 35.0544 9.30024C38.1301 9.30024 40.6247 11.7829 40.6247 14.844C40.6247 17.9051 38.1301 20.3878 35.0544 20.3878Z" fill="#020202"/>
+          </svg>
+        </a>
+
+        <!-- 2. Sellitems.gg -->
+        <a href="https://sellitems.gg/" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-blue-500/80 shadow-sm hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 hover:scale-105" title="Sellitems.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#0f75ff] flex items-center justify-center font-bold text-white shadow-md shadow-[#0f75ff]/30 group-hover:scale-105 transition-transform">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-white" viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-blue-600 transition-colors">SellItems<span class="text-[#0f75ff]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 3. Roswap -->
+        <a href="https://roswap.com/es" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="RoSwap">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400 flex items-center justify-center shadow-md shadow-amber-400/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="22" height="22" rx="6" fill="#F0A608"></rect>
+                <rect x="3" y="3" width="18" height="18" rx="4" fill="#F7EA59"></rect>
+                <path d="M12.5239 16.5045L13.8 11.4H15.7314C16.0366 11.4 16.2033 11.044 16.0079 10.8095L12.8066 6.96792C12.3868 6.4642 11.6132 6.4642 11.1934 6.96792L7.99206 10.8095C7.79666 11.044 7.96339 11.4 8.26862 11.4H10.2L11.4761 16.5045C11.6125 17.0499 12.3875 17.0499 12.5239 16.5045Z" fill="#5C3C10"></path>
+              </svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-amber-600 transition-colors">RoSwap</span>
+          </div>
+        </a>
+
+        <!-- 4. Mm2.shop -->
+        <a href="https://mm2.shop/" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-red-500/80 shadow-sm hover:shadow-xl hover:shadow-red-500/15 transition-all duration-300 hover:scale-105 flex items-center justify-center" title="MM2Shop">
+          <div class="logo-mm2shop text-3xl sm:text-4xl font-heading font-black flex items-center tracking-tight transition-transform group-hover:scale-105 select-none">
+            <span class="text-[#1c120c]">MM</span>
+            <span class="text-[#ff3b30] font-black text-[1.16em] px-0.5 transform -translate-y-0.5 inline-block drop-shadow-[0_2px_8px_rgba(255,59,48,0.4)]">2</span>
+            <span class="text-[#1c120c] font-black">Shop</span>
+          </div>
+        </a>
+
+        <!-- 5. Bloxswaps -->
+        <a href="https://bloxswaps.com/es/trade-mm2" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-rose-500/80 shadow-sm hover:shadow-xl hover:shadow-rose-500/15 transition-all duration-300 hover:scale-105" title="BloxSwaps">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-r from-[#D31027] to-[#EA384D] flex items-center justify-center p-2 shadow-md shadow-rose-600/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-rose-600 transition-colors">BLOX<span class="font-light text-stone-500">SWAPS</span></span>
+          </div>
+        </a>
+
+        <!-- 6. Starpets.gg -->
+        <a href="https://starpets.gg/adopt-me" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="StarPets.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#fe9920] flex items-center justify-center shadow-md shadow-[#fe9920]/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-stone-900 fill-current" viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-amber-600 transition-colors">StarPets<span class="text-[#fe9920]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 7. Eldorado.gg -->
+        <a href="https://www.eldorado.gg/" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="Eldorado.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center p-2 shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
+              <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/favicons/v4/efav-128.png" alt="Eldorado" class="w-6 h-6 sm:w-7 sm:h-7 rounded object-contain">
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-wide text-[#1c120c] uppercase group-hover:text-amber-600 transition-colors">Eldorado<span class="text-[#f59e0b]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 8. Tipsy Chat -->
+        <a href="https://tipsy.chat/" target="_blank" rel="noopener noreferrer" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-purple-500/80 shadow-sm hover:shadow-xl hover:shadow-purple-500/15 transition-all duration-300 hover:scale-105" title="Tipsy Chat">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.22-1.31C8.63 21.49 10.27 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-purple-600 transition-colors">tipsy<span class="text-purple-600 font-heading font-extrabold text-base ml-0.5">.chat</span></span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Pista 2 Gemela (Loop Infinito Seamless) -->
+      <div class="marquee-track" aria-hidden="true">
+        <!-- 1. Bonoxs -->
+        <a href="https://bonoxs.com/ve" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-yellow-400/80 shadow-sm hover:shadow-xl hover:shadow-yellow-500/15 transition-all duration-300 hover:scale-105" title="Bonoxs">
+          <svg class="h-10 sm:h-12 w-auto drop-shadow-sm group-hover:scale-105 transition-transform" viewBox="0 0 131 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="131" height="30" rx="4" fill="#FFFF00"/>
+            <path d="M63.0366 6.16113H61.5868L60.4963 7.24649L60.4832 17.7296L48.8594 6.19363H47.7754L46.6848 7.27898V22.435L47.7754 23.5203H49.2316L50.3156 22.435V12.6343L61.5868 23.5203H63.0366L64.1271 22.435V7.24649L63.0366 6.16113Z" fill="#020202"/>
+            <path d="M22.8625 6.16113H6.51074V23.5203H22.8625L23.953 22.435V18.4575L20.3157 14.844L23.953 11.224V7.24649L22.8625 6.16113ZM20.3222 19.8938H10.1416V16.6572H17.4097L20.3222 19.5493V19.8938V19.8938ZM20.3222 10.1386L17.4163 13.0307H10.1416V9.79415H20.3157V10.1386H20.3222Z" fill="#020202"/>
+            <path d="M83.9333 6.16113H68.6721L67.5815 7.24649V22.435L68.6721 23.5203H83.9333L85.0238 22.435V7.24649L83.9333 6.16113ZM81.393 19.9068H71.2189V10.1386V9.77465H81.393V19.9068Z" fill="#020202"/>
+            <path d="M120.64 13.1932L111.915 13.2062L110.466 11.7634V11.224L111.915 9.78115L122.455 9.79415L123.546 8.69579V7.24649L122.455 6.16113H110.466L106.828 9.78115V13.1022L110.1 16.4818L119.184 16.4688L120.64 17.9116V18.451L119.19 19.8938L107.919 19.8808L106.828 20.9792V22.4285L107.919 23.5138H120.64L124.271 19.9068V16.6507L120.64 13.1932Z" fill="#020202"/>
+            <path d="M105.006 8.69579V7.24649L103.916 6.16113H102.46L96.2884 12.3093L90.1108 6.16113H88.6611L87.5706 7.24649V8.69579L93.7482 14.8375L87.5706 20.9922V22.435L88.6611 23.5138H90.1043L96.2884 17.3656L102.466 23.5138H103.916L105.006 22.435V20.9922L98.8287 14.8375L105.006 8.69579Z" fill="#020202"/>
+            <path d="M35.0544 5.40076C29.8171 5.40076 25.5659 9.62519 25.5659 14.844C25.5659 20.0563 29.8106 24.2872 35.0544 24.2872C40.2916 24.2872 44.5428 20.0628 44.5428 14.844C44.5428 9.62519 40.2982 5.40076 35.0544 5.40076ZM35.0544 20.3878C31.9786 20.3878 29.4841 17.9051 29.4841 14.844C29.4841 11.7829 31.9786 9.30024 35.0544 9.30024C38.1301 9.30024 40.6247 11.7829 40.6247 14.844C40.6247 17.9051 38.1301 20.3878 35.0544 20.3878Z" fill="#020202"/>
+          </svg>
+        </a>
+
+        <!-- 2. Sellitems.gg -->
+        <a href="https://sellitems.gg/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-blue-500/80 shadow-sm hover:shadow-xl hover:shadow-blue-500/15 transition-all duration-300 hover:scale-105" title="Sellitems.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#0f75ff] flex items-center justify-center font-bold text-white shadow-md shadow-[#0f75ff]/30 group-hover:scale-105 transition-transform">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-white" viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-blue-600 transition-colors">SellItems<span class="text-[#0f75ff]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 3. Roswap -->
+        <a href="https://roswap.com/es" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="RoSwap">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400 flex items-center justify-center shadow-md shadow-amber-400/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="22" height="22" rx="6" fill="#F0A608"></rect>
+                <rect x="3" y="3" width="18" height="18" rx="4" fill="#F7EA59"></rect>
+                <path d="M12.5239 16.5045L13.8 11.4H15.7314C16.0366 11.4 16.2033 11.044 16.0079 10.8095L12.8066 6.96792C12.3868 6.4642 11.6132 6.4642 11.1934 6.96792L7.99206 10.8095C7.79666 11.044 7.96339 11.4 8.26862 11.4H10.2L11.4761 16.5045C11.6125 17.0499 12.3875 17.0499 12.5239 16.5045Z" fill="#5C3C10"></path>
+              </svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-amber-600 transition-colors">RoSwap</span>
+          </div>
+        </a>
+
+        <!-- 4. Mm2.shop -->
+        <a href="https://mm2.shop/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-red-500/80 shadow-sm hover:shadow-xl hover:shadow-red-500/15 transition-all duration-300 hover:scale-105 flex items-center justify-center" title="MM2Shop">
+          <div class="logo-mm2shop text-3xl sm:text-4xl font-heading font-black flex items-center tracking-tight transition-transform group-hover:scale-105 select-none">
+            <span class="text-[#1c120c]">MM</span>
+            <span class="text-[#ff3b30] font-black text-[1.16em] px-0.5 transform -translate-y-0.5 inline-block drop-shadow-[0_2px_8px_rgba(255,59,48,0.4)]">2</span>
+            <span class="text-[#1c120c] font-black">Shop</span>
+          </div>
+        </a>
+
+        <!-- 5. Bloxswaps -->
+        <a href="https://bloxswaps.com/es/trade-mm2" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-rose-500/80 shadow-sm hover:shadow-xl hover:shadow-rose-500/15 transition-all duration-300 hover:scale-105" title="BloxSwaps">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-r from-[#D31027] to-[#EA384D] flex items-center justify-center p-2 shadow-md shadow-rose-600/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-rose-600 transition-colors">BLOX<span class="font-light text-stone-500">SWAPS</span></span>
+          </div>
+        </a>
+
+        <!-- 6. Starpets.gg -->
+        <a href="https://starpets.gg/adopt-me" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="StarPets.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#fe9920] flex items-center justify-center shadow-md shadow-[#fe9920]/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-stone-900 fill-current" viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-amber-600 transition-colors">StarPets<span class="text-[#fe9920]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 7. Eldorado.gg -->
+        <a href="https://www.eldorado.gg/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-amber-500/80 shadow-sm hover:shadow-xl hover:shadow-amber-500/15 transition-all duration-300 hover:scale-105" title="Eldorado.gg">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center p-2 shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
+              <img src="https://assetsdelivery.eldorado.gg/v7/_assets_/favicons/v4/efav-128.png" alt="Eldorado" class="w-6 h-6 sm:w-7 sm:h-7 rounded object-contain">
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-wide text-[#1c120c] uppercase group-hover:text-amber-600 transition-colors">Eldorado<span class="text-[#f59e0b]">.gg</span></span>
+          </div>
+        </a>
+
+        <!-- 8. Tipsy Chat -->
+        <a href="https://tipsy.chat/" target="_blank" rel="noopener noreferrer" tabindex="-1" class="marquee-logo-item group px-8 sm:px-11 py-5 sm:py-6 rounded-3xl min-h-[88px] sm:min-h-[96px] bg-white/95 hover:bg-white border border-orange-200/80 hover:border-purple-500/80 shadow-sm hover:shadow-xl hover:shadow-purple-500/15 transition-all duration-300 hover:scale-105" title="Tipsy Chat">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-600/30 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.35 5L2 22l5.22-1.31C8.63 21.49 10.27 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+            </div>
+            <span class="font-heading font-black text-2xl sm:text-3xl tracking-tight text-[#1c120c] group-hover:text-purple-600 transition-colors">tipsy<span class="text-purple-600 font-heading font-extrabold text-base ml-0.5">.chat</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- GARANTÍA Y SEGURIDAD PARA LAS TIENDAS -->
+  <section class="py-14 px-4 sm:px-6 max-w-4xl mx-auto reveal-on-scroll">
+    <div class="minimal-card p-6 sm:p-8 text-left shadow-sm card-happy">
+      
+      <div class="flex items-center gap-2.5 text-orange-600 text-xs font-heading font-black mb-2">
+        <i data-lucide="shield-check" class="w-4 h-4 text-orange-600"></i>
+        <span data-i18n="guarantee.badge">COMPROMISO CON LAS TIENDAS</span>
+      </div>
+
+      <h3 class="text-xl sm:text-2xl font-black font-heading text-[#1c120c] mb-3" data-i18n="guarantee.title">
+        Garantía y seguridad para tu tienda o página web
+      </h3>
+
+      <p class="text-xs sm:text-sm text-stone-700 leading-relaxed mb-6 font-medium" data-i18n="guarantee.sub">
+        Sé que para un comercio o página web la reputación lo es todo. Cuando trabajo con una tienda me aseguro de que el video transmita confianza a los compradores:
+      </p>
+
+      <div class="space-y-3 text-xs text-stone-800 font-medium">
+        <div class="flex items-start gap-2.5">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+          <span data-i18n="guarantee.item1"><strong>Grabación limpia de tu página:</strong> Muestro tu web de forma profesional, destacando lo rápido que es comprar o usar cupones.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+          <span data-i18n="guarantee.item2"><strong>Revisiones incluidas:</strong> Si necesitas ajustar un cupón de descuento, el audio o algún detalle del video, te lo corrijo sin problema.</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+          <span data-i18n="guarantee.item3"><strong>Entrega puntual:</strong> Cumplimiento estricto y seguro de las fechas acordadas para tus promociones.</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MÉTODOS DE PAGO (PayPal, Zinli y Airtm) -->
+  <section id="pagos" class="py-12 px-4 sm:px-6 max-w-4xl mx-auto reveal-on-scroll">
+    
+    <div class="mb-8 text-left">
+      <div class="text-xs font-heading font-black text-emerald-700 uppercase tracking-wider mb-1" data-i18n="payments.badge">Pagos Seguros</div>
+      <h2 class="text-2xl font-black font-heading text-[#1c120c]" data-i18n="payments.title">Métodos de pago que acepto</h2>
+      <p class="text-xs sm:text-sm text-stone-700 mt-1 font-medium" data-i18n="payments.sub">
+        Acepto pagos directos a través de las 3 opciones más cómodas:
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 mb-4">
+      
+      <!-- PayPal -->
+      <div class="minimal-card p-6 sm:p-8 rounded-3xl border-2 border-blue-200/80 bg-white/95 shadow-sm hover:border-blue-500 hover:shadow-xl hover:shadow-blue-500/15 hover:-translate-y-1.5 transition-all duration-300 group flex items-center sm:flex-col sm:items-start gap-4 reveal-on-scroll delay-100">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-blue-50/90 border border-blue-200/80 flex items-center justify-center p-3 sm:p-3.5 shadow-sm group-hover:scale-105 group-hover:bg-blue-100/70 transition-all duration-300 flex-shrink-0">
+          <img src="assets/paypal-logo.png" alt="PayPal" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="font-heading font-black text-2xl sm:text-3xl text-[#1c120c] tracking-tight group-hover:text-blue-600 transition-colors">
+            PayPal
+          </div>
+        </div>
+      </div>
+
+      <!-- Zinli -->
+      <div class="minimal-card p-6 sm:p-8 rounded-3xl border-2 border-purple-200/80 bg-white/95 shadow-sm hover:border-purple-500 hover:shadow-xl hover:shadow-purple-500/15 hover:-translate-y-1.5 transition-all duration-300 group flex items-center sm:flex-col sm:items-start gap-4 reveal-on-scroll delay-200">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-purple-50/90 border border-purple-200/80 flex items-center justify-center p-3 sm:p-3.5 shadow-sm group-hover:scale-105 group-hover:bg-purple-100/70 transition-all duration-300 flex-shrink-0">
+          <img src="assets/zinli-logo.png" alt="Zinli" class="w-full h-full rounded-xl object-contain">
+        </div>
+        <div>
+          <div class="font-heading font-black text-2xl sm:text-3xl text-[#1c120c] tracking-tight group-hover:text-purple-600 transition-colors">
+            Zinli
+          </div>
+        </div>
+      </div>
+
+      <!-- Airtm -->
+      <div class="minimal-card p-6 sm:p-8 rounded-3xl border-2 border-cyan-200/80 bg-white/95 shadow-sm hover:border-cyan-500 hover:shadow-xl hover:shadow-cyan-500/15 hover:-translate-y-1.5 transition-all duration-300 group flex items-center sm:flex-col sm:items-start gap-4 reveal-on-scroll delay-300">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-cyan-50/90 border border-cyan-200/80 flex items-center justify-center p-3 sm:p-3.5 shadow-sm group-hover:scale-105 group-hover:bg-cyan-100/70 transition-all duration-300 flex-shrink-0">
+          <img src="assets/airtm-logo.png" alt="Airtm" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="font-heading font-black text-2xl sm:text-3xl text-[#1c120c] tracking-tight group-hover:text-cyan-600 transition-colors">
+            Airtm
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       SECCIÓN CONTACTO REDISEÑADA: BENTO HUB CON ANIMACIONES Y CANAL VIP
+       ========================================================================== -->
+  <section id="contacto" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto relative reveal-on-scroll">
+    
+    <!-- Encabezado de la Sección con Insignia Pulsante -->
+    <!-- Encabezado de la Sección con Insignia Pulsante -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100 border border-orange-300 text-xs font-heading font-black text-orange-800 uppercase tracking-widest mb-3 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span data-i18n="contact.badge">CANAL DIRECTO & PROPUESTAS RÁPIDAS</span>
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-black font-heading text-[#1c120c] tracking-tight mb-3" data-i18n="contact.title">
+        Hablemos de tu tienda <span class="bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 bg-clip-text text-transparent">o proyecto</span>
+      </h2>
+      <p class="text-xs sm:text-base text-stone-700 max-w-2xl mx-auto font-medium" data-i18n="contact.sub">
+        Respondo con rapidez el mismo día. Escríbeme a mi correo comercial oficial o completa los detalles de tu web en el formulario.
+      </p>
+    </div>
+
+    <!-- Bento Grid de Contacto (12 Columnas en Desktop) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      
+      <!-- COLUMNA IZQUIERDA: HUB DE CANALES DIRECTOS (5 COLS) -->
+      <div class="lg:col-span-5 flex flex-col gap-4 h-full reveal-on-scroll delay-100">
+        
+        <!-- 1. TARJETA VIP: CANAL DIRECTO DE EMAIL COMERCIAL -->
+        <div class="contact-hub-card vip-contact-card p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between group flex-1">
+          
+          <!-- Resplandor ambiental cálido -->
+          <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-orange-500/15 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500"></div>
+
+          <div>
+            <!-- Header con badge prioritario -->
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-100 border border-orange-300 text-[10px] font-heading font-black text-orange-800 uppercase tracking-wider">
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-orange-600"></i>
+                <span data-i18n="contact.vipOfficial">Canal VIP Oficial</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-heading font-black text-emerald-700 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span data-i18n="contact.vipSpeed">Respuesta Rápida ⚡</span>
+              </span>
+            </div>
+
+            <!-- Identidad de Correo Comercial -->
+            <div class="flex items-center gap-3.5 mb-3.5">
+              <div class="relative w-14 h-14 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-md group-hover:scale-105 transition-transform flex-shrink-0 bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white">
+                <i data-lucide="mail-check" class="w-7 h-7"></i>
+                <div class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-white"></div>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="font-heading font-black text-lg sm:text-xl text-[#1c120c] tracking-tight leading-tight" data-i18n="contact.vipEmailTitle">
+                  Correo Comercial
+                </div>
+                <div class="text-xs font-mono font-bold text-orange-700 truncate mt-0.5 select-all" title="quinterochristianjose6@gmail.com">
+                  quinterochristianjose6@gmail.com
+                </div>
+              </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-stone-700 font-medium leading-relaxed mb-5" data-i18n="contact.vipEmailDesc">
+              Canal directo prioritario para acuerdos comerciales, revisión de propuestas, presupuestos de packs y guiones publicitarios. Respondo el mismo día.
+            </p>
+          </div>
+
+          <!-- Botones de Acción: Copiar Correo y Escribir Mail -->
+          <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-2">
+            <button 
+              id="copy-email-btn" 
+              type="button"
+              class="btn-shimmer w-full sm:w-1/2 py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-heading font-extrabold text-xs tracking-wide transition-all shadow-md shadow-orange-600/25 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span class="btn-text" data-i18n="contact.copyBtn">Copiar Correo</span>
+            </button>
+            <a 
+              id="write-email-btn"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=quinterochristianjose6@gmail.com&su=Propuesta%20de%20Patrocinio%20-%20Chris" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-1/2 py-3 px-4 rounded-xl bg-stone-100 hover:bg-stone-900 text-[#1c120c] hover:text-white font-heading font-extrabold text-xs tracking-wide transition-all border border-stone-200 flex items-center justify-center gap-2 shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span data-i18n="contact.writeBtn">Escribir Email</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 2 TARJETAS SECUNDARIAS: TIKTOK DIRECTO Y YOUTUBE OFICIAL (GRID 2 COLS) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <!-- Card: TikTok Directo -->
+          <a href="https://www.tiktok.com/@chrix.mm2?_r=1&_t=ZS-99pvCI0pyA3" target="_blank" rel="noopener noreferrer" class="contact-hub-card p-4 sm:p-5 rounded-2xl flex flex-col justify-between group hover:border-orange-500">
+            <div>
+              <div class="flex items-center justify-between mb-2.5">
+                <div class="w-9 h-9 rounded-xl bg-stone-900 text-white flex items-center justify-center border border-stone-800 group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                </div>
+                <span class="text-[10px] font-heading font-extrabold text-orange-700 uppercase bg-orange-100/80 px-2 py-0.5 rounded-md" data-i18n="contact.tiktokBadge">TikTok DM</span>
+              </div>
+              <div class="text-[10px] font-heading font-bold text-stone-500 uppercase tracking-wider" data-i18n="contact.tiktokTitle">TikTok Oficial</div>
+              <div class="text-sm font-black text-[#1c120c] font-heading tracking-wide my-0.5">
+                @chrix.mm2
+              </div>
+              <p class="text-[11px] text-stone-600 font-medium" data-i18n="contact.tiktokDesc">301.7K seguidores • Mensajes directos para marcas.</p>
+            </div>
+            <div class="mt-3 w-full py-2 px-3 rounded-xl bg-stone-100 group-hover:bg-orange-600 text-[#1c120c] group-hover:text-white text-xs font-heading font-bold transition-all border border-stone-200 flex items-center justify-center gap-1.5 shadow-2xs">
+              <span data-i18n="contact.tiktokBtn">Ver Perfil</span>
+              <svg class="w-3.5 h-3.5 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </div>
+          </a>
+
+          <!-- Card: YouTube Canal Oficial -->
+          <a href="https://www.youtube.com/@Chrixmm2" target="_blank" rel="noopener noreferrer" class="contact-hub-card p-4 sm:p-5 rounded-2xl flex flex-col justify-between group hover:border-red-500">
+            <div>
+              <div class="flex items-center justify-between mb-2.5">
+                <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                  <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </div>
+                <span class="text-[10px] font-heading font-extrabold text-red-700 uppercase bg-red-100/80 px-2 py-0.5 rounded-md border border-red-200" data-i18n="contact.ytBadge">YouTube</span>
+              </div>
+              <div class="text-[10px] font-heading font-bold text-stone-500 uppercase tracking-wider" data-i18n="contact.ytTitle">Canal Oficial</div>
+              <div class="text-sm font-black text-[#1c120c] font-heading tracking-wide my-0.5">
+                @Chrixmm2
+              </div>
+              <p class="text-[11px] text-stone-600 font-medium" data-i18n="contact.ytDesc">295K suscriptores • Videos largos y Shorts de Roblox.</p>
+            </div>
+            <div class="mt-3 w-full py-2 px-3 rounded-xl bg-stone-100 group-hover:bg-red-600 text-[#1c120c] group-hover:text-white text-xs font-heading font-bold transition-all border border-stone-200 flex items-center justify-center gap-1.5 shadow-2xs">
+              <span data-i18n="contact.ytBtn">Ver Canal</span>
+              <svg class="w-3.5 h-3.5 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- COLUMNA DERECHA: FORMULARIO INTERACTIVO CON CHIPS RÁPIDOS (7 COLS) -->
+      <div class="lg:col-span-7 reveal-on-scroll delay-200">
+        <form id="contact-form" class="contact-hub-card p-6 sm:p-8 h-full flex flex-col justify-between space-y-4 text-left relative overflow-hidden">
+          
+          <div>
+            <!-- Encabezado del Formulario -->
+            <div class="flex items-center justify-between gap-3 mb-2">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center border border-orange-200 shadow-2xs">
+                  <i data-lucide="send" class="w-4 h-4 text-orange-600"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-black font-heading text-[#1c120c] tracking-tight" data-i18n="contact.formTitle">
+                  Envía tu propuesta o consulta
+                </h3>
+              </div>
+              <span class="text-[11px] font-heading font-bold text-orange-700 bg-orange-50 border border-orange-200/80 px-2.5 py-0.5 rounded-full" data-i18n="contact.formBadge">
+                Sin compromiso
+              </span>
+            </div>
+
+            <p class="text-xs text-stone-600 font-medium mb-4" data-i18n="contact.formSub">
+              Indícame qué buscas y te respondo rápidamente con ideas y presupuesto adaptado a tu tienda.
+            </p>
+
+            <!-- Píldoras de Selección Rápida de Servicio (Animadas) -->
+            <div class="mb-4">
+              <label class="block text-[11px] font-heading font-extrabold text-stone-700 uppercase tracking-wider mb-2" data-i18n="contact.serviceLabel">
+                ¿Qué tipo de promoción necesitas? <span class="text-stone-400 font-normal">(toca una opción)</span>
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="contact-pill-chip is-active" data-service="1 Video Promocional" data-service-key="service1">
+                  <span>🎬</span> <span data-i18n="contact.chip1">1 Video Promocional</span>
+                </button>
+                <button type="button" class="contact-pill-chip" data-service="Pack de Videos (Campaña)" data-service-key="service2">
+                  <span>📦</span> <span data-i18n="contact.chip2">Pack de Videos</span>
+                </button>
+                <button type="button" class="contact-pill-chip" data-service="Dinámica o Sorteo" data-service-key="service3">
+                  <span>🎁</span> <span data-i18n="contact.chip3">Dinámica o Sorteo</span>
+                </button>
+                <button type="button" class="contact-pill-chip" data-service="Alianza a Largo Plazo" data-service-key="service4">
+                  <span>🤝</span> <span data-i18n="contact.chip4">Alianza a Largo Plazo</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Campos del Formulario -->
+            <div class="space-y-3.5">
+              
+              <!-- 1. Nombre o link de la tienda -->
+              <div>
+                <label class="block text-xs font-heading text-stone-800 mb-1 font-bold" data-i18n="contact.storeLabel">
+                  Nombre o link de tu tienda/página web *
+                </label>
+                <input 
+                  type="text" 
+                  id="form-store-input"
+                  name="store"
+                  required 
+                  placeholder="Tu tienda, marca o sitio web" 
+                  data-i18n-placeholder="contact.storePlaceholder"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-orange-200/90 text-[#1c120c] text-xs font-medium placeholder-stone-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-inner"
+                >
+              </div>
+
+              <!-- 2. Contacto -->
+              <div>
+                <label class="block text-xs font-heading text-stone-800 mb-1 font-bold" data-i18n="contact.contactLabel">
+                  Tu correo o método de contacto *
+                </label>
+                <input 
+                  type="text" 
+                  id="form-contact-input"
+                  name="contact"
+                  required 
+                  placeholder="Tu correo o usuario de Discord / TikTok" 
+                  data-i18n-placeholder="contact.contactPlaceholder"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-orange-200/90 text-[#1c120c] text-xs font-medium placeholder-stone-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-inner"
+                >
+              </div>
+
+              <!-- 3. Mensaje / Detalles -->
+              <div>
+                <label class="block text-xs font-heading text-stone-800 mb-1 font-bold" data-i18n="contact.detailsLabel">
+                  Detalles del video o campaña *
+                </label>
+                <textarea 
+                  rows="3" 
+                  id="form-details-input"
+                  name="details"
+                  required 
+                  placeholder="Cuéntame sobre tu proyecto o qué deseas promocionar..." 
+                  data-i18n-placeholder="contact.detailsPlaceholder"
+                  class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-orange-200/90 text-[#1c120c] text-xs font-medium placeholder-stone-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-inner"
+                ></textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Botón de Envío -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              class="btn-shimmer w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-500 hover:to-amber-400 text-white font-heading font-extrabold text-xs tracking-wide transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30 hover:scale-[1.01] active:scale-[0.99]"
+            >
+              <span data-i18n="contact.submitBtn">Mandar propuesta ahora</span>
+              <svg class="w-3.5 h-3.5 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+
+            <!-- Banner de éxito animado -->
+            <div id="form-feedback" class="hidden mt-3 p-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-center text-xs font-heading font-bold copy-success-pulse" data-i18n="contact.feedbackSuccess">
+              ✅ ¡Mensaje recibido! Te responderé muy pronto.
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-orange-200/60 py-8 text-center text-xs text-stone-600 font-heading font-medium">
+    <div class="flex items-center justify-center flex-wrap gap-4 sm:gap-6 mb-3 text-stone-600 text-xs font-heading">
+      <a href="https://www.tiktok.com/@chrix.mm2?_r=1&_t=ZS-99pvCI0pyA3" target="_blank" rel="noopener noreferrer" class="hover:text-orange-600 transition-colors font-bold">
+        TikTok (301.7K)
+      </a>
+      <span class="text-stone-300">•</span>
+      <a href="https://www.youtube.com/@Chrixmm2" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 transition-colors font-bold">
+        YouTube (295K)
+      </a>
+      <span class="text-stone-300">•</span>
+      <a href="https://www.roblox.com/search/users?keyword=chrixmm2" target="_blank" rel="noopener noreferrer" class="hover:text-stone-900 transition-colors font-bold">
+        Roblox (@Chrixxmm2)
+      </a>
+    </div>
+    <p class="text-[11px] text-stone-500" data-i18n="footer.copy">Chrixmm2 • Videos publicitarios para tiendas y páginas de Roblox © 2026</p>
+  </footer>
+
+  <!-- Modal de Video Vertical -->
+  <dialog id="video-dialog" data-lenis-prevent class="p-0 bg-transparent text-[#1c120c] max-w-[320px] w-full mx-auto my-auto rounded-3xl overflow-hidden focus:outline-none backdrop:bg-black/60 backdrop:backdrop-blur-sm">
+    <div class="bg-white/95 backdrop-blur-xl border border-orange-300 rounded-3xl p-4 shadow-2xl relative flex flex-col">
+      
+      <button 
+        onclick="closeVideoModal()" 
+        aria-label="Cerrar video"
+        class="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-stone-100 hover:bg-orange-600 text-[#1c120c] hover:text-white flex items-center justify-center transition-colors border border-stone-200 shadow-sm"
+      >
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="relative w-full aspect-[9/16] bg-black rounded-2xl overflow-hidden mb-3 border border-stone-200 shadow-inner">
+        <video id="dialog-video-player" controls class="w-full h-full object-contain bg-black">
+          <span data-i18n="modal.fallback">Tu navegador no soporta video.</span>
+        </video>
+      </div>
+
+      <div class="px-1">
+        <h3 id="dialog-video-title" class="text-xs font-heading font-bold text-[#1c120c] mb-1"></h3>
+        <p class="text-[10px] text-stone-600 font-heading mb-2 font-medium" data-i18n="modal.format">Formato vertical 1080x1920 (TikTok / Shorts)</p>
+        
+        <!-- Botón para ver en Google Drive -->
+        <a 
+          id="dialog-drive-link" 
+          href="#" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="hidden w-full py-2.5 px-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs text-center flex items-center justify-center gap-2 transition-all shadow-md shadow-orange-500/25 hover:scale-[1.01]"
+        >
+          <span data-i18n="modal.driveBtn">Ver video en Google Drive</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+</body>
+</html>

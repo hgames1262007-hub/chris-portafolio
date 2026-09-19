@@ -42,11 +42,21 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
+html {
+  overflow-x: hidden !important;
+  overflow-x: clip !important;
+  width: 100%;
+  max-width: 100%;
+}
+
 body {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #1c120c;
   background-color: #faf8f5;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
+  overflow-x: clip !important;
+  width: 100%;
+  max-width: 100%;
   position: relative;
   min-height: 100vh;
   letter-spacing: -0.01em;
@@ -831,11 +841,12 @@ dialog::backdrop {
 /* Adaptación 3D Coverflow para Dispositivos Móviles (< 768px) */
 @media (max-width: 767px) {
   .carousel-3d-viewport {
-    height: 460px !important;
+    height: 520px !important;
     perspective: 850px !important;
     perspective-origin: 50% 50% !important;
     overflow: visible !important;
-    margin-top: 0.25rem !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.35rem !important;
     touch-action: pan-y !important;
   }
   .carousel-3d-stage {
@@ -851,7 +862,8 @@ dialog::backdrop {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    width: 220px !important;
+    width: 255px !important;
+    max-width: 78vw !important;
     border-radius: 20px !important;
     transform-origin: center center !important;
     transform-style: preserve-3d !important;
@@ -873,8 +885,8 @@ dialog::backdrop {
     border-bottom-right-radius: 18px !important;
   }
   .carousel-3d-card.pending-collabs-card {
-    height: calc(220px * 16 / 9 + 48px) !important;
-    max-height: 460px !important;
+    height: calc(255px * 16 / 9 + 48px) !important;
+    max-height: 505px !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
@@ -912,14 +924,14 @@ dialog::backdrop {
 
 @media (max-width: 767px) and (max-height: 700px) {
   .carousel-3d-viewport {
-    height: 420px !important;
+    height: 440px !important;
   }
   .carousel-3d-card {
-    width: 205px !important;
+    width: 220px !important;
   }
   .carousel-3d-card.pending-collabs-card {
-    height: calc(205px * 16 / 9 + 46px) !important;
-    max-height: 416px !important;
+    height: calc(220px * 16 / 9 + 46px) !important;
+    max-height: 438px !important;
   }
 }
 
@@ -1655,8 +1667,9 @@ dialog::backdrop {
   user-select: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
-  padding: 0.45rem 0.9rem;
+  padding: 0.5rem 0.9rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1664,6 +1677,19 @@ dialog::backdrop {
   background: rgba(255, 247, 237, 0.7);
   color: #7c2d12;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .contact-pill-chip {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.70rem;
+    border-radius: 14px;
+    line-height: 1.22;
+    box-sizing: border-box;
+  }
 }
 
 .contact-pill-chip:hover {
@@ -1985,34 +2011,54 @@ dialog::backdrop {
 /* ==========================================================================
    WARM SOLAR CONCENTRIC PORTAL LAYERS (ESTILO MIXPANEL + PALETA SOLAR DE CHRIS)
    ========================================================================== */
+#tiendas {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip !important;
+  overflow-x: hidden !important;
+  contain: paint;
+}
+
 .mixpanel-portal-track {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 300vh;
   z-index: 10;
+  overflow-x: clip !important;
+  overflow-x: hidden !important;
+  contain: paint;
 }
 
 .mixpanel-portal-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100dvh;
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  overflow: hidden;
+  overflow: hidden !important;
+  overflow-x: clip !important;
+  contain: paint;
   background: radial-gradient(ellipse at 50% 12%, rgba(254, 243, 199, 0.45) 0%, #fffbf7 50%, #fffaf5 100%);
 }
 
 .mixpanel-portal-viewport {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  overflow: hidden;
+  overflow: hidden !important;
+  overflow-x: clip !important;
+  contain: paint;
 }
 
 /* Grupo Unificado de Capas Concéntricas: Se escalan juntas como un solo bloque sólido (NUNCA SE SEPARAN) */
@@ -2338,34 +2384,47 @@ dialog::backdrop {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%) scale(0.92);
-    width: 100vw !important;
-    max-width: 100vw !important;
+    width: 100% !important;
+    max-width: 100% !important;
     height: 100vh !important;
     height: 100dvh !important;
-    padding: 0.5rem 0.5rem 0.75rem;
+    padding: 5rem 0.5rem 1.35rem 0.5rem !important;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end !important;
     align-items: center;
     opacity: 0;
     pointer-events: none;
     z-index: 2;
     will-change: transform, opacity;
+    overflow-x: clip !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
   .portal-header-block,
   #portalHeaderBlock {
     width: 100% !important;
-    max-width: 100vw !important;
+    max-width: 100% !important;
     padding: 0 0.85rem !important;
     box-sizing: border-box !important;
-    margin-bottom: 0.15rem !important;
+    margin-bottom: 0.35rem !important;
+  }
+  .portal-badge-wrap {
+    margin-bottom: 0.3rem !important;
+  }
+  .portal-badge-wrap > div {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.035em !important;
+    padding: 0.2rem 0.65rem !important;
+    max-width: 88vw !important;
+    white-space: nowrap !important;
   }
   .portal-header-title,
   #portalHeaderBlock .portal-header-title {
-    font-size: clamp(0.88rem, 3.8vw, 1.05rem) !important;
-    line-height: 1.30 !important;
-    max-width: calc(100vw - 1.7rem) !important;
-    margin: 0 auto 0.2rem auto !important;
+    font-size: clamp(0.82rem, 3.4vw, 0.98rem) !important;
+    line-height: 1.25 !important;
+    max-width: 86vw !important;
+    margin: 0 auto 0.25rem auto !important;
     white-space: normal !important;
     word-break: normal !important;
     overflow-wrap: break-word !important;
@@ -2503,10 +2562,10 @@ dialog::backdrop {
 /* Canvas de fondo estelar cósmico */
 #embers {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 1;
 }

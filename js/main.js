@@ -993,7 +993,7 @@ function update3DCarousel(scrollHProgress) {
 
   // Parámetros responsivos de geometría 3D adaptados para móvil y desktop
   const isMobile = window.innerWidth < 768;
-  const stepDistance = isMobile ? (window.innerWidth < 400 ? 172 : 192) : 310;
+  const stepDistance = isMobile ? (window.innerWidth < 400 ? 195 : 215) : 310;
   const centerScale = isMobile ? 1.05 : 1.10;
   const sideScaleReduction = isMobile ? 0.18 : 0.22;
   const centerZ = isMobile ? 55 : 80;
@@ -1434,7 +1434,7 @@ function setupHorizontalScroll() {
               : portfolioVideos.filter(v => v.category === currentFilter);
             const count = filtered.length;
             if (count > 1) {
-              const stepDist = window.innerWidth < 400 ? 172 : 192;
+              const stepDist = window.innerWidth < 400 ? 195 : 215;
               const deltaIndex = -dx / stepDist;
               const liveIndex = Math.max(0, Math.min(count - 1, mobileActiveIndex + deltaIndex));
               mobileCurrentFloat = liveIndex;

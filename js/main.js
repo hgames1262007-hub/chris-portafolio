@@ -744,13 +744,11 @@ window.handleCardClick = function(id, index, event) {
     return;
   }
 
-  // Si no está centrado en desktop, centrarlo primero
-  if (window.innerWidth >= 768) {
-    if (!clickedCard.classList.contains("is-center-active")) {
-      event.preventDefault();
-      scrollToVideoIndex(index);
-      return;
-    }
+  // Si la tarjeta no está centrada al frente, centrarla primero
+  if (!clickedCard.classList.contains("is-center-active")) {
+    event.preventDefault();
+    scrollToVideoIndex(index);
+    return;
   }
 
   // DESMUTEAR / MUTEAR SIN PAUSAR EL VIDEO (Continúa exactamente por donde va)
@@ -849,20 +847,17 @@ function update3DCarousel(scrollHProgress) {
   const cards = document.querySelectorAll("#carousel-track .carousel-3d-card");
   if (!cards.length) return;
 
-  if (window.innerWidth < 768) {
-    cards.forEach(card => {
-      card.style.transform = "";
-      card.style.opacity = "";
-      card.style.zIndex = "";
-      card.style.visibility = "";
-      card.style.display = "";
-      card.style.pointerEvents = "";
-    });
-    return;
-  }
-
   const count = cards.length;
   if (count <= 0) return;
+
+  // Parámetros responsivos de geometría 3D adaptados para móvil y desktop
+  const isMobile = window.innerWidth < 768;
+  const stepDistance = isMobile ? (window.innerWidth < 400 ? 172 : 192) : 310;
+  const centerScale = isMobile ? 1.05 : 1.10;
+  const sideScaleReduction = isMobile ? 0.18 : 0.22;
+  const centerZ = isMobile ? 55 : 80;
+  const sideZ = isMobile ? -65 : -85;
+  const rotYAngle = isMobile ? 12 : 14;
 
   // Progreso directo y suave de 0 (Video 0 Bonoxs centrado) a count - 1 (último video)
   const activeFloatIndex = count > 1 ? scrollHProgress * (count - 1) : 0;
@@ -902,7 +897,6 @@ function update3DCarousel(scrollHProgress) {
     // - (1) El video activo actual en el centro
     // - (2) El video anterior a la izquierda (si delta < 0)
     // - (3) El video siguiente a la derecha (si delta > 0)
-    // Cualquier tarjeta adicional (|delta| > 1.25) se oculta completamente para eliminar saturación.
     if (absDelta > 1.25) {
       card.style.display = "none";
       card.style.opacity = "0";
@@ -922,29 +916,29 @@ function update3DCarousel(scrollHProgress) {
     let zIndex = Math.max(1, Math.round(35 - absDelta * 12));
 
     if (absDelta < 0.15) {
-      // 1. VIDEO ACTIVO EN EL CENTRO: Frontal Z: +80px, escala 1.10, nítido y cercano
-      x = delta * 310;
-      z = 80 - absDelta * 80;
-      rotY = delta * 10;
-      scale = 1.10 - absDelta * 0.1;
+      // 1. VIDEO ACTIVO EN EL CENTRO: Frontal Z, escala superior, nítido y cercano
+      x = delta * stepDistance;
+      z = centerZ - absDelta * centerZ;
+      rotY = delta * 8;
+      scale = centerScale - absDelta * 0.1;
       opacity = 1;
       card.classList.add("is-center-active");
     } else if (delta > 0) {
       // 2. SIGUIENTE VIDEO A LA DERECHA (solo 1 video visible)
       const step = Math.min(delta, 1.25);
-      x = step * 310;
-      z = -85 * step;
-      rotY = -14 * step;
-      scale = 1.10 - 0.22 * step;
+      x = step * stepDistance;
+      z = sideZ * step;
+      rotY = -rotYAngle * step;
+      scale = centerScale - sideScaleReduction * step;
       opacity = absDelta > 1.0 ? Math.max(0, 1 - (absDelta - 1.0) * 4) : 1;
       card.classList.remove("is-center-active");
     } else {
       // 3. VIDEO PREVIO A LA IZQUIERDA (solo 1 video visible)
       const step = Math.min(absDelta, 1.25);
-      x = -step * 310;
-      z = -85 * step;
-      rotY = 14 * step;
-      scale = 1.10 - 0.22 * step;
+      x = -step * stepDistance;
+      z = sideZ * step;
+      rotY = rotYAngle * step;
+      scale = centerScale - sideScaleReduction * step;
       opacity = absDelta > 1.0 ? Math.max(0, 1 - (absDelta - 1.0) * 4) : 1;
       card.classList.remove("is-center-active");
     }
@@ -1078,25 +1072,9 @@ function setupHorizontalScroll() {
   const count = filtered.length;
 
   function updateContainerDimensions() {
-    if (window.innerWidth < 768) {
-      container.style.height = "auto";
-      track.style.transform = "none";
-      if (progressBar) progressBar.style.width = "100%";
-      if (counter) counter.textContent = `${count} videos`;
-      if (stage) {
-        stage.style.width = "";
-        stage.style.height = "";
-        stage.style.transform = "";
-        stage.style.opacity = "";
-        stage.style.pointerEvents = "";
-        stage.style.zIndex = "";
-      }
-      update3DCarousel(0);
-      return;
-    }
-
-    // Recorrido vertical suficiente para recorrer las capas concéntricas y cada video en 3D
-    const scrollTravel = Math.max(count * 450, 3600);
+    // Recorrido vertical calibrado para explorar en 3D en móvil y desktop
+    const isMobile = window.innerWidth < 768;
+    const scrollTravel = isMobile ? Math.max(count * 320, 2000) : Math.max(count * 450, 3600);
     container.style.height = `${window.innerHeight + scrollTravel}px`;
 
     onScroll();
@@ -1128,7 +1106,9 @@ function setupHorizontalScroll() {
 
     // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS, NUNCA SE SEPARAN)
     if (archGroup) {
-      const scaleVal = 1 + p * 3.6;
+      const isMobile = window.innerWidth < 768;
+      const baseScale = isMobile ? 0.48 : 1;
+      const scaleVal = baseScale * (1 + p * 3.6);
       const op = Math.max(0, 1 - p * 3.0);
       archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
       archGroup.style.opacity = op.toFixed(3);
@@ -1139,8 +1119,9 @@ function setupHorizontalScroll() {
     const ease = expandProgress * expandProgress * (3 - 2 * expandProgress); // Smoothstep
 
     if (stage) {
-      const startW = window.innerWidth > 1400 ? 72 : 74;
-      const startH = window.innerHeight < 800 ? 78 : 75;
+      const isMobile = window.innerWidth < 768;
+      const startW = window.innerWidth > 1400 ? 72 : (isMobile ? 92 : 74);
+      const startH = window.innerHeight < 800 ? (isMobile ? 86 : 78) : 75;
       const curWidthVw = startW + (100 - startW) * ease;
       const curHeightVh = startH + (100 - startH) * ease;
 
@@ -1181,7 +1162,6 @@ function setupHorizontalScroll() {
   }
 
   function onScroll() {
-    if (window.innerWidth < 768) return;
     calculateProgress();
     if (!isTicking) {
       isTicking = true;
@@ -1228,6 +1208,57 @@ function setupHorizontalScroll() {
       updateContainerDimensions();
       render();
     }, { passive: true });
+
+    // Soporte de gestos táctiles (Touch Swipe izquierda/derecha) para teléfonos móviles
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isHorizontalSwipe = false;
+
+    const touchArea = document.getElementById("carousel-sticky-wrapper") || container;
+    if (touchArea) {
+      touchArea.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          touchStartTime = Date.now();
+          isHorizontalSwipe = false;
+        }
+      }, { passive: true });
+
+      touchArea.addEventListener("touchmove", (e) => {
+        if (e.touches.length === 1) {
+          const dx = e.touches[0].clientX - touchStartX;
+          const dy = e.touches[0].clientY - touchStartY;
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+            isHorizontalSwipe = true;
+          }
+        }
+      }, { passive: true });
+
+      touchArea.addEventListener("touchend", (e) => {
+        if (isHorizontalSwipe) {
+          const touchEndX = e.changedTouches[0].clientX;
+          const dx = touchEndX - touchStartX;
+          const dt = Date.now() - touchStartTime;
+          if (Math.abs(dx) > 35 && dt < 600) {
+            const filtered = currentFilter === "all" ? portfolioVideos : portfolioVideos.filter(v => v.category === currentFilter);
+            const count = filtered.length;
+            if (dx < 0) {
+              if (activeCarouselStep < count - 1) {
+                activeCarouselStep++;
+                scrollToCarouselStep(activeCarouselStep);
+              }
+            } else {
+              if (activeCarouselStep > 0) {
+                activeCarouselStep--;
+                scrollToCarouselStep(activeCarouselStep);
+              }
+            }
+          }
+        }
+      }, { passive: true });
+    }
 
     // Flechas de navegación para saltar de video en video
     const prevBtn = document.getElementById("carousel-prev-btn");
@@ -2169,7 +2200,7 @@ function setupScrollTransitionSounds() {
  * Scroll-spy activo para la cápsula de navegación flotante (.site-header-dock)
  */
 function setupNavScrollSpy() {
-  const navItems = document.querySelectorAll(".nav-dock-item[data-section]");
+  const navItems = document.querySelectorAll(".nav-dock-item[data-section], .mobile-dock-item[data-section]");
   if (!navItems.length) return;
 
   const sectionIds = ["tiendas", "impacto", "marcas", "pagos", "contacto"];

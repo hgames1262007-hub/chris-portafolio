@@ -340,6 +340,19 @@ const portfolioVideos = [
     title_en: "Upcoming official brand collaborations in production",
     pendingBrands: [
       {
+        name: "MM2 SHOP VE",
+        url: "https://mm2shopve.com/",
+        tag: "Armas & Godlys MM2 Venezuela",
+        tag_en: "MM2 Weapons & Godlys Venezuela",
+        desc: "Tienda y venta de armas Godlys, Ancients y Sets de Murder Mystery 2 con entrega rápida.",
+        desc_en: "Murder Mystery 2 Godlys, Ancients and Sets store with fast trade delivery.",
+        badge: "En proceso",
+        badge_en: "In progress",
+        badgeClass: "bg-cyan-50 text-cyan-800 border border-cyan-200",
+        badgeDot: "bg-cyan-500",
+        logoSrc: "assets/brands/mm2shopve-logo.png"
+      },
+      {
         name: "Starpets.gg",
         url: "https://starpets.gg/adopt-me",
         tag: "Adopt Me & Pet Simulator 99",
@@ -689,7 +702,7 @@ function renderVideos() {
             </div>
             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8.5px] sm:text-[9px] font-heading font-extrabold bg-orange-100/80 text-orange-800 border border-orange-200 shadow-2xs flex-shrink-0">
               <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
-              <span>${currentLang === 'en' ? '3 Stores' : '3 Tiendas'}</span>
+              <span>${video.pendingBrands.length} ${currentLang === 'en' ? 'Stores' : 'Tiendas'}</span>
             </span>
           </div>
 

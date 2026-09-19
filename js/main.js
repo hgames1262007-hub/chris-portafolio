@@ -960,7 +960,7 @@ window.scrollToCarouselStep = function(step) {
   if (scrollDistance <= 0) return;
 
   const normalizedProgress = maxStep > 0 ? targetStep / maxStep : 0;
-  const targetP = 0.20 + normalizedProgress * 0.72;
+  const targetP = 0.20 + normalizedProgress * 0.80;
   const containerTop = container.getBoundingClientRect().top + window.scrollY;
   const targetY = containerTop + targetP * scrollDistance;
 
@@ -1151,7 +1151,7 @@ function handleCarouselWheel(e) {
   if (Math.abs(deltaY) < 16) return;
 
   const maxStep = count - 1;
-  const scrollHProgress = Math.min(Math.max((targetProgress - 0.20) / 0.72, 0), 1);
+  const scrollHProgress = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
   if (!isWheelSnapping) {
     activeCarouselStep = Math.round(scrollHProgress * maxStep);
   }
@@ -1183,9 +1183,6 @@ function handleCarouselWheel(e) {
           isWheelSnapping = false;
         }, 520);
       }
-    } else {
-      // En el último video (maxStep), permitir que el scroll continúe naturalmente hacia abajo a #impacto
-      return;
     }
   } else if (deltaY < -16) {
     // Scroll hacia ARRIBA
@@ -1222,9 +1219,9 @@ function setupHorizontalScroll() {
   const count = filtered.length;
 
   function updateContainerDimensions() {
-    // Recorrido vertical en PC y móvil calibrado: sin distancias kilométricas ni espacios muertos
+    // Recorrido vertical: en móvil es suave (~1100px) para abrir el portal y dar espacio holgado de exploración; en PC recorre el carrusel completo con settle snap
     const isMobile = window.innerWidth < 768;
-    const scrollTravel = isMobile ? 650 : Math.max(count * 280, 1600);
+    const scrollTravel = isMobile ? 1100 : Math.max(count * 450, 3600);
     container.style.height = `${window.innerHeight + scrollTravel}px`;
 
     onScroll();
@@ -1259,8 +1256,8 @@ function setupHorizontalScroll() {
     if (archGroup) {
       if (isMobile) {
         // En móvil: Apertura concéntrica de las capas cuadraditas con zoom fluido y fade hacia afuera
-        const scaleVal = 1 + p * 3.4;
-        const op = Math.max(0, 1 - p * 1.55);
+        const scaleVal = 1 + p * 3.6;
+        const op = Math.max(0, 1 - p * 2.3);
         archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
         archGroup.style.opacity = op.toFixed(3);
         archGroup.style.display = op <= 0.01 ? "none" : "block";
@@ -1279,14 +1276,14 @@ function setupHorizontalScroll() {
       if (isMobile) {
         // En móvil: CERO layout thrashing de width/height.
         // El centro va apareciendo suavemente desde el fondo mientras se hace scroll
-        const revealProgress = Math.min(Math.max(p / 0.60, 0), 1);
+        const revealProgress = Math.min(Math.max((p - 0.03) / 0.35, 0), 1);
         const smoothReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
         const stageScale = 0.92 + 0.08 * smoothReveal;
 
         stage.style.transform = `translateX(-50%) scale(${stageScale.toFixed(4)})`;
         stage.style.opacity = smoothReveal.toFixed(3);
-        stage.style.pointerEvents = smoothReveal < 0.15 ? "none" : "auto";
-        stage.style.zIndex = smoothReveal > 0.8 ? "30" : "2";
+        stage.style.pointerEvents = smoothReveal < 0.2 ? "none" : "auto";
+        stage.style.zIndex = smoothReveal > 0.6 ? "25" : "5";
       } else {
         const expandProgress = Math.min(Math.max(p / 0.18, 0), 1);
         const ease = expandProgress * expandProgress * (3 - 2 * expandProgress); // Smoothstep
@@ -1312,7 +1309,7 @@ function setupHorizontalScroll() {
     // En PC: Conducido por el scroll vertical fijado
     // En Móvil: El carrusel se mueve de izquierda a derecha por gestos táctiles directos (swipe 1:1)
     if (!isMobile) {
-      const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.72, 0), 1);
+      const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.80, 0), 1);
       update3DCarousel(scrollHProgress);
     }
 
@@ -1329,19 +1326,7 @@ function setupHorizontalScroll() {
     }
   }
 
-  // Control de Bloqueo Suave de Scroll en Celular al entrar a los Videos
-  let isMobileVideoLocked = false;
-  let hasEnteredVideoLock = false;
-  let mobileLockTimer = null;
-  let lastScrollY = window.scrollY;
-
-  window._releaseMobilePortalLock = function() {
-    isMobileVideoLocked = false;
-    if (mobileLockTimer) {
-      clearTimeout(mobileLockTimer);
-      mobileLockTimer = null;
-    }
-  };
+  window._releaseMobilePortalLock = function() {};
 
   function onScroll() {
     calculateProgress();
@@ -1350,78 +1335,8 @@ function setupHorizontalScroll() {
       requestAnimationFrame(render);
     }
 
-    const isMobile = window.innerWidth < 768;
-    const currentScrollY = window.scrollY;
-    const isScrollingDown = currentScrollY > lastScrollY;
-    lastScrollY = currentScrollY;
-
-    if (isMobile) {
-      const containerTop = container.getBoundingClientRect().top + window.scrollY;
-      const scrollDistance = container.offsetHeight - window.innerHeight;
-
-      // Si el usuario subió de nuevo hacia el Hero, resetear el bloqueo
-      if (currentScrollY < containerTop - 120) {
-        hasEnteredVideoLock = false;
-        if (isMobileVideoLocked) {
-          isMobileVideoLocked = false;
-          if (mobileLockTimer) clearTimeout(mobileLockTimer);
-        }
-      }
-
-      // Si el usuario ya pasó hacia abajo a la siguiente sección (#impacto), liberar
-      if (scrollDistance > 0 && currentScrollY > containerTop + scrollDistance + 80) {
-        if (isMobileVideoLocked) {
-          isMobileVideoLocked = false;
-          if (mobileLockTimer) clearTimeout(mobileLockTimer);
-        }
-      }
-
-      // Bloqueo suave al entrar al área de los videos desde arriba
-      if (!hasEnteredVideoLock && isScrollingDown) {
-        const rect = container.getBoundingClientRect();
-        if (scrollDistance > 0 && rect.top <= 80 && rect.bottom >= window.innerHeight * 0.4) {
-          const currentP = -rect.top / scrollDistance;
-
-          // Se activa cuando la transición de apertura de los videos está en marcha
-          if (currentP >= 0.12 && currentP <= 0.88) {
-            hasEnteredVideoLock = true;
-            isMobileVideoLocked = true;
-
-            // Posición exacta ideal: el centro del escenario 100% revelado y nítido
-            const targetLockY = containerTop + 0.60 * scrollDistance;
-
-            if (window.lenis) {
-              window.lenis.scrollTo(targetLockY, {
-                duration: 0.60,
-                easing: (t) => 1 - Math.pow(1 - t, 3)
-              });
-            } else {
-              window.scrollTo({
-                top: targetLockY,
-                behavior: "smooth"
-              });
-            }
-
-            // Desbloqueo suave automático tras 2.2 segundos para poder continuar
-            if (mobileLockTimer) clearTimeout(mobileLockTimer);
-            mobileLockTimer = setTimeout(() => {
-              isMobileVideoLocked = false;
-            }, 2200);
-          }
-        }
-      }
-
-      // Si el bloqueo suave está activo, contener cualquier inercia de scroll rápido hacia abajo
-      if (isMobileVideoLocked && scrollDistance > 0) {
-        const targetLockY = containerTop + 0.60 * scrollDistance;
-        if (currentScrollY > targetLockY + 25) {
-          window.scrollTo(0, targetLockY);
-        }
-      }
-    }
-
     // Centrado magnético automático (Settle snap) exclusivo para PC
-    if (!isMobile) {
+    if (window.innerWidth >= 768) {
       clearTimeout(settleTimer);
       settleTimer = setTimeout(() => {
         if (isWheelSnapping) return;
@@ -1431,9 +1346,7 @@ function setupHorizontalScroll() {
         const inPinnedZone = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
         if (!inPinnedZone) return;
 
-        // Solo ajustar entre videos intermedios (entre 0.22 y 0.88)
-        // Si el usuario pasa de 0.88 hacia abajo, no atraparlo: dejar que fluya libremente hacia #impacto
-        if (targetProgress >= 0.22 && targetProgress <= 0.88) {
+        if (targetProgress >= 0.18 && targetProgress <= 0.98) {
           const filtered = currentFilter === "all" 
             ? portfolioVideos 
             : portfolioVideos.filter(v => v.category === currentFilter);
@@ -1441,7 +1354,7 @@ function setupHorizontalScroll() {
           if (count <= 1) return;
 
           const maxStep = count - 1;
-          const shp = Math.min(Math.max((targetProgress - 0.20) / 0.72, 0), 1);
+          const shp = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
           const currentStepFloat = shp * maxStep;
           const nearestStep = Math.round(currentStepFloat);
 
@@ -1482,39 +1395,6 @@ function setupHorizontalScroll() {
     let isDirectionLocked = false;
     let touchStartTime = 0;
 
-    let windowTouchStartY = 0;
-    let windowTouchStartX = 0;
-
-    window.addEventListener("touchstart", (e) => {
-      if (window.innerWidth >= 768) return;
-      if (e.touches.length === 1) {
-        windowTouchStartY = e.touches[0].clientY;
-        windowTouchStartX = e.touches[0].clientX;
-      }
-    }, { passive: true });
-
-    window.addEventListener("touchmove", (e) => {
-      if (window.innerWidth >= 768 || !isMobileVideoLocked) return;
-      if (e.touches.length === 1) {
-        const currentY = e.touches[0].clientY;
-        const currentX = e.touches[0].clientX;
-        const dy = currentY - windowTouchStartY;
-        const dx = currentX - windowTouchStartX;
-
-        // Si es deslizamiento horizontal entre videos, dejarlo operar libremente
-        if (Math.abs(dx) >= Math.abs(dy)) return;
-
-        // Si intenta hacer scroll hacia abajo durante el bloqueo suave:
-        if (dy < -4) {
-          if (e.cancelable) e.preventDefault();
-        } else if (dy > 30) {
-          // Si el usuario quiere volver arriba hacia el Hero, liberar el bloqueo de inmediato
-          isMobileVideoLocked = false;
-          if (mobileLockTimer) clearTimeout(mobileLockTimer);
-        }
-      }
-    }, { passive: false });
-
     const touchArea = document.getElementById("carousel-sticky-wrapper") || container;
     if (touchArea) {
       touchArea.addEventListener("touchstart", (e) => {
@@ -1545,15 +1425,6 @@ function setupHorizontalScroll() {
                 isHorizontalDrag = true;
               } else {
                 isHorizontalDrag = false;
-                if (isMobileVideoLocked) {
-                  if (dy < -4) {
-                    if (e.cancelable) e.preventDefault();
-                    return;
-                  } else if (dy > 30) {
-                    isMobileVideoLocked = false;
-                    if (mobileLockTimer) clearTimeout(mobileLockTimer);
-                  }
-                }
                 isTouchActive = false; // Dejar que el scroll vertical nativo fluya libremente
                 return;
               }

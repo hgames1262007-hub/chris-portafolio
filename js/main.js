@@ -1255,9 +1255,10 @@ function setupHorizontalScroll() {
     // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS)
     if (archGroup) {
       if (isMobile) {
-        // En móvil: Apertura concéntrica de las capas cuadraditas con zoom fluido y fade hacia afuera
-        const scaleVal = 1 + p * 3.6;
-        const op = Math.max(0, 1 - p * 2.3);
+        // En móvil: Apertura concéntrica rápida hacia los bordes y fade out completo
+        // Desaparece por completo antes de que el usuario se enfoque en los videos
+        const scaleVal = 1 + p * 4.0;
+        const op = Math.max(0, 1 - p * 8.0);
         archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
         archGroup.style.opacity = op.toFixed(3);
         archGroup.style.display = op <= 0.01 ? "none" : "block";
@@ -1274,16 +1275,16 @@ function setupHorizontalScroll() {
     // 2. EXPANSIÓN DEL ESCENARIO DESDE EL FONDO A PANTALLA COMPLETA
     if (stage) {
       if (isMobile) {
-        // En móvil: CERO layout thrashing de width/height.
-        // El centro va apareciendo suavemente desde el fondo mientras se hace scroll
-        const revealProgress = Math.min(Math.max((p - 0.03) / 0.35, 0), 1);
+        // En móvil: Los videos aparecen de inmediato con 100% de nitidez y colores vivos
+        // Cero opacidad intermedia que lave o blanquee los videos sobre el fondo claro
+        const revealProgress = Math.min(Math.max(p / 0.08, 0), 1);
         const smoothReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
-        const stageScale = 0.92 + 0.08 * smoothReveal;
+        const stageScale = 0.96 + 0.04 * smoothReveal;
 
         stage.style.transform = `translateX(-50%) scale(${stageScale.toFixed(4)})`;
-        stage.style.opacity = smoothReveal.toFixed(3);
-        stage.style.pointerEvents = smoothReveal < 0.2 ? "none" : "auto";
-        stage.style.zIndex = smoothReveal > 0.6 ? "25" : "5";
+        stage.style.opacity = smoothReveal >= 0.95 ? "1" : smoothReveal.toFixed(3);
+        stage.style.pointerEvents = "auto";
+        stage.style.zIndex = "30";
       } else {
         const expandProgress = Math.min(Math.max(p / 0.18, 0), 1);
         const ease = expandProgress * expandProgress * (3 - 2 * expandProgress); // Smoothstep

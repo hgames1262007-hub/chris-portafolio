@@ -714,8 +714,7 @@ dialog::backdrop {
 .card-depth-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(28, 18, 12, 0.14) 100%);
-  backdrop-filter: blur(0.4px);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(28, 18, 12, 0.20) 100%);
   pointer-events: none;
   border-radius: 24px;
   opacity: 0;
@@ -869,6 +868,13 @@ dialog::backdrop {
     display: flex !important;
     flex-direction: column !important;
     touch-action: pan-y !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .carousel-3d-card .card-depth-overlay {
+    display: none !important;
   }
   .carousel-3d-card .brand-badge-header {
     border-top-left-radius: 18px !important;
@@ -881,6 +887,11 @@ dialog::backdrop {
     height: auto !important;
     border-bottom-left-radius: 18px !important;
     border-bottom-right-radius: 18px !important;
+  }
+  .carousel-3d-card .tiktok-frame video {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
   }
   .carousel-3d-card.pending-collabs-card {
     height: calc(255px * 16 / 9 + 48px) !important;
@@ -2247,7 +2258,7 @@ dialog::backdrop {
     height: calc(100vh + 150px);
     height: calc(100dvh + 150px);
     pointer-events: none;
-    z-index: 25;
+    z-index: 10 !important;
     will-change: transform, opacity;
   }
   .portal-arch-ring {
@@ -2361,7 +2372,7 @@ dialog::backdrop {
     border-top-right-radius: 16px;
     z-index: 11;
     background: transparent;
-    box-shadow: inset 0 4px 12px rgba(254, 240, 138, 0.2);
+    box-shadow: none !important;
   }
 
   /* Escenario Central en Móvil: GPU Compositing limpio sin layout thrashing */
@@ -2381,7 +2392,7 @@ dialog::backdrop {
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    z-index: 2;
+    z-index: 30 !important;
     will-change: transform, opacity;
     overflow-x: clip !important;
     overflow-x: hidden !important;

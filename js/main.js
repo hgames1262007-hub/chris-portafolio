@@ -1860,10 +1860,17 @@ function setupTopProgressBar() {
   const bar = document.getElementById("topProgressBar");
   if (!bar) return;
 
+  let ticking = false;
   window.addEventListener("scroll", () => {
-    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
-    bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+        bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+        ticking = false;
+      });
+      ticking = true;
+    }
   }, { passive: true });
 }
 
@@ -2480,15 +2487,21 @@ function setupViralGraphAnimation() {
   function runCounters() {
     if (audienceCounter) {
       const target = parseInt(audienceCounter.dataset.target || "610000", 10);
-      const duration = 2000;
+      const duration = 1600;
       const startTime = performance.now();
+      let lastUpdate = 0;
 
       function step(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        const current = Math.floor(ease * target);
-        audienceCounter.textContent = `+${current.toLocaleString("en-US")}`;
+        
+        // Throttled a ~30ms para evitar saturación del hilo principal y reflows en móvil
+        if (now - lastUpdate > 30 || progress === 1) {
+          lastUpdate = now;
+          const current = Math.floor(ease * target);
+          audienceCounter.textContent = `+${current.toLocaleString("en-US")}`;
+        }
 
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -2502,15 +2515,20 @@ function setupViralGraphAnimation() {
     statCounters.forEach(stat => {
       const target = parseFloat(stat.dataset.target || "0");
       const suffix = stat.dataset.suffix || "";
-      const duration = 1800;
+      const duration = 1400;
       const startTime = performance.now();
+      let lastUpdate = 0;
 
       function step(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-        const current = (ease * target).toFixed(1);
-        stat.textContent = `${current}${suffix}`;
+        
+        if (now - lastUpdate > 35 || progress === 1) {
+          lastUpdate = now;
+          const current = (ease * target).toFixed(1);
+          stat.textContent = `${current}${suffix}`;
+        }
 
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -2526,14 +2544,15 @@ function setupViralGraphAnimation() {
     entries.forEach(entry => {
       if (entry.isIntersecting && !hasAnimated) {
         hasAnimated = true;
+        observer.unobserve(card); // Desactivar observador una vez disparado para evitar cálculos continuos en scroll
         svg.classList.add("is-animated");
         runCounters();
         playUiSound("slide");
       }
     });
   }, {
-    threshold: 0.25,
-    rootMargin: "0px 0px -40px 0px"
+    threshold: 0.15,
+    rootMargin: "0px 0px -20px 0px"
   });
 
   observer.observe(card);

@@ -381,7 +381,7 @@
   <!-- ==========================================================================
        MIXPANEL-STYLE STAGGERED BENTO DASHBOARD (#impacto)
        ========================================================================== -->
-  <section id="impacto" class="py-16 px-4 sm:px-6 max-w-6xl mx-auto text-center relative reveal-on-scroll">
+  <section id="impacto" class="py-16 px-4 sm:px-6 max-w-6xl mx-auto text-center relative">
     <div class="mb-10 text-center">
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-100 border border-orange-300 text-xs font-heading font-bold text-orange-800 uppercase tracking-widest mb-2 shadow-sm">
         <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
@@ -415,13 +415,16 @@
             </span>
           </div>
 
-          <div class="flex flex-wrap items-baseline gap-3 mb-1">
-            <div class="text-4xl sm:text-6xl font-black font-display text-[#1c120c] tracking-tight">
-              <span id="counter-audience" data-target="610000">+610,000</span>
+          <!-- Bloque de Métrica Principal con Altura Estable (Cero salto de layout / teletransportación) -->
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 mb-2 min-h-[68px] sm:min-h-[58px]">
+            <div class="text-4xl sm:text-6xl font-black font-display text-[#1c120c] tracking-tight leading-none tabular-nums select-none flex items-baseline">
+              <span id="counter-audience" data-target="610000" class="inline-block tabular-nums font-mono-nums">+610,000</span>
             </div>
-            <span class="text-xs font-heading font-bold text-orange-600 bg-orange-100/90 px-2.5 py-0.5 rounded-lg border border-orange-200" data-i18n="metrics.audienceLabel">
-              Audiencia Activa Verificada
-            </span>
+            <div class="mt-1 sm:mt-0 flex items-center">
+              <span class="inline-block text-xs font-heading font-bold text-orange-600 bg-orange-100/90 px-2.5 py-0.5 rounded-lg border border-orange-200 whitespace-nowrap" data-i18n="metrics.audienceLabel">
+                Audiencia Activa Verificada
+              </span>
+            </div>
           </div>
 
           <div class="text-xs sm:text-sm font-heading font-semibold text-stone-600 mb-5" data-i18n="metrics.audienceDesc">
@@ -480,7 +483,7 @@
 
               <!-- Beacon pulsante en el punto culminante actual (+610K) -->
               <g class="viral-beacon-group" transform="translate(485, 14)">
-                <circle class="viral-beacon-ping" r="8" fill="#ea580c" opacity="0.4"/>
+                <circle class="viral-beacon-ping" r="7" fill="#ea580c" opacity="0.4"/>
                 <circle class="viral-beacon-core" r="4.5" fill="#ea580c" stroke="#ffffff" stroke-width="2.5"/>
               </g>
             </svg>
@@ -502,8 +505,8 @@
               <span class="text-[10px] font-heading font-extrabold text-stone-500 uppercase" data-i18n="metrics.retention">Retención a los 3s</span>
               <span class="text-[9px] font-heading font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded" data-i18n="metrics.retentionSub">+14% vs promedio</span>
             </div>
-            <div class="text-xl sm:text-2xl font-black font-heading text-emerald-600 mb-1.5">
-              <span class="stat-counter" data-target="92.4" data-suffix="%">92.4%</span>
+            <div class="text-xl sm:text-2xl font-black font-heading text-emerald-600 mb-1.5 min-h-[30px] flex items-center">
+              <span class="stat-counter tabular-nums font-mono-nums inline-block min-w-[65px]" data-target="92.4" data-suffix="%">92.4%</span>
             </div>
             <div class="w-full h-1.5 bg-emerald-100 rounded-full overflow-hidden">
               <div class="h-full bg-emerald-500 rounded-full w-[92.4%]"></div>

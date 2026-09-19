@@ -657,8 +657,8 @@ function renderVideos() {
           </div>
         </div>
 
-        <!-- MARCO VERTICAL 9:16 (Video en Reproducción Continua Fluida) -->
-        <div class="tiktok-frame relative overflow-hidden flex flex-col justify-between p-3 flex-shrink-0">
+        <!-- MARCO VERTICAL 9:16 (Video 100% Limpio y Despejado) -->
+        <div class="tiktok-frame relative overflow-hidden flex-shrink-0">
           <video 
             class="carousel-video-element absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
             loop 
@@ -669,38 +669,9 @@ function renderVideos() {
             src="${video.videoSrc || ''}"
           ></video>
 
-          <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/75 pointer-events-none"></div>
-
-          <!-- Header interno del video -->
-          <div class="flex items-center justify-between w-full z-10">
-            <span class="px-2 py-0.5 rounded-full bg-black/80 text-[9px] font-heading font-extrabold text-amber-300 border border-white/20 tracking-wide backdrop-blur-md">
-              ${video.format}
-            </span>
-            <span class="text-[9px] font-heading text-white bg-black/60 px-2 py-0.5 rounded-md font-bold border border-white/10 backdrop-blur-md">
-              Roblox TikTok
-            </span>
-          </div>
-
-          <!-- Badge Interactivo de Sonido (Click para desmutear sin pausar) -->
-          <div class="video-sound-pill-wrap flex flex-col items-center justify-center text-center my-auto py-2 z-10 pointer-events-none">
-            <div class="sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 text-white border border-white/20 backdrop-blur-md shadow-xl transition-all duration-300">
-              <span class="sound-icon-holder text-sm">🔇</span>
-              <span class="sound-status-text text-[10px] font-heading font-extrabold uppercase tracking-wide text-amber-300">
-                ${currentLang === 'en' ? 'Click to unmute' : 'Click para activar sonido'}
-              </span>
-            </div>
-            <span class="text-[9px] text-stone-300 font-heading font-semibold drop-shadow-sm mt-1">
-              ${currentLang === 'en' ? 'Continuous playback • Never pauses' : 'Reproducción continua • Sin pausas'}
-            </span>
-          </div>
-
-          <!-- Footer interno del video -->
-          <div class="flex items-center justify-between text-[9px] font-heading font-bold text-stone-300 z-10">
-            <div class="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded-md backdrop-blur-md border border-white/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span>${currentLang === 'en' ? 'Official Campaign' : 'Campaña Oficial'}</span>
-            </div>
-            <span class="text-amber-300 font-extrabold">+500K</span>
+          <!-- Botón de sonido discreto en esquina inferior derecha (estilo TikTok/Reels) -->
+          <div class="corner-sound-btn absolute bottom-3 right-3 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 shadow-lg backdrop-blur-md transition-all duration-300 pointer-events-none">
+            <span class="sound-icon-holder text-xs">🔇</span>
           </div>
         </div>
 
@@ -745,30 +716,28 @@ function renderVideos() {
 }
 
 /**
- * Actualiza la apariencia visual del botón de sonido en la tarjeta.
+ * Actualiza la apariencia visual del botón de sonido discreto en la tarjeta.
  */
 function updateCardSoundUI(card, isUnmuted) {
   if (!card) return;
-  const iconHolder = card.querySelector(".sound-icon-holder");
-  const textHolder = card.querySelector(".sound-status-text");
-  const badge = card.querySelector(".sound-toggle-badge");
-  if (!iconHolder || !textHolder || !badge) return;
+  const soundBtn = card.querySelector(".corner-sound-btn");
+  if (!soundBtn) return;
 
   if (isUnmuted) {
-    iconHolder.innerHTML = `
-      <span class="inline-flex items-center gap-0.5 mr-0.5">
-        <span class="w-1 h-3 bg-orange-400 animate-pulse rounded-full"></span>
-        <span class="w-1 h-4 bg-orange-500 animate-pulse rounded-full"></span>
-        <span class="w-1 h-2 bg-amber-400 animate-pulse rounded-full"></span>
+    soundBtn.innerHTML = `
+      <span class="flex items-center gap-0.5">
+        <span class="w-0.5 h-2.5 bg-orange-400 animate-pulse rounded-full"></span>
+        <span class="w-0.5 h-3.5 bg-orange-500 animate-pulse rounded-full"></span>
+        <span class="w-0.5 h-2 bg-amber-300 animate-pulse rounded-full"></span>
       </span>
-      <span>🔊</span>
+      <span class="text-xs">🔊</span>
     `;
-    textHolder.textContent = currentLang === 'en' ? 'Sound On • Click to mute' : 'Sonido activo • Click para silenciar';
-    badge.className = "sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/90 text-white border-2 border-orange-500 shadow-xl shadow-orange-500/25 backdrop-blur-md transition-all duration-300 scale-105";
+    soundBtn.className = "corner-sound-btn absolute bottom-3 right-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-950/90 text-white border border-orange-500 shadow-xl shadow-orange-500/30 backdrop-blur-md transition-all duration-300 pointer-events-none scale-105";
   } else {
-    iconHolder.innerHTML = `🔇`;
-    textHolder.textContent = currentLang === 'en' ? 'Click to unmute' : 'Click para activar sonido';
-    badge.className = "sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md shadow-xl transition-all duration-300";
+    soundBtn.innerHTML = `
+      <span class="sound-icon-holder text-xs">🔇</span>
+    `;
+    soundBtn.className = "corner-sound-btn absolute bottom-3 right-3 z-20 flex items-center justify-center w-8 h-8 rounded-full bg-black/60 text-white border border-white/20 shadow-lg backdrop-blur-md transition-all duration-300 pointer-events-none";
   }
 }
 

@@ -462,6 +462,9 @@ function setupSmoothScroll() {
   // Desplazamiento cinematográfico para todos los enlaces internos (#tiendas, #contacto, etc.)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
+      if (typeof window._releaseMobilePortalLock === 'function') {
+        window._releaseMobilePortalLock();
+      }
       const targetId = this.getAttribute('href');
       if (!targetId || targetId === '#') return;
       const targetEl = document.querySelector(targetId);
@@ -1216,9 +1219,9 @@ function setupHorizontalScroll() {
   const count = filtered.length;
 
   function updateContainerDimensions() {
-    // Recorrido vertical: en móvil es breve y suave (~700px) solo para abrir el portal; en PC recorre el carrusel completo
+    // Recorrido vertical: en móvil es suave y cómodo (~900px) solo para abrir el portal; en PC recorre el carrusel completo
     const isMobile = window.innerWidth < 768;
-    const scrollTravel = isMobile ? 700 : Math.max(count * 450, 3600);
+    const scrollTravel = isMobile ? 900 : Math.max(count * 450, 3600);
     container.style.height = `${window.innerHeight + scrollTravel}px`;
 
     onScroll();
@@ -1323,6 +1326,20 @@ function setupHorizontalScroll() {
     }
   }
 
+  // Control de Bloqueo Suave de Scroll en Celular al entrar a los Videos
+  let isMobileVideoLocked = false;
+  let hasEnteredVideoLock = false;
+  let mobileLockTimer = null;
+  let lastScrollY = window.scrollY;
+
+  window._releaseMobilePortalLock = function() {
+    isMobileVideoLocked = false;
+    if (mobileLockTimer) {
+      clearTimeout(mobileLockTimer);
+      mobileLockTimer = null;
+    }
+  };
+
   function onScroll() {
     calculateProgress();
     if (!isTicking) {
@@ -1330,8 +1347,78 @@ function setupHorizontalScroll() {
       requestAnimationFrame(render);
     }
 
+    const isMobile = window.innerWidth < 768;
+    const currentScrollY = window.scrollY;
+    const isScrollingDown = currentScrollY > lastScrollY;
+    lastScrollY = currentScrollY;
+
+    if (isMobile) {
+      const containerTop = container.getBoundingClientRect().top + window.scrollY;
+      const scrollDistance = container.offsetHeight - window.innerHeight;
+
+      // Si el usuario subió de nuevo hacia el Hero, resetear el bloqueo
+      if (currentScrollY < containerTop - 120) {
+        hasEnteredVideoLock = false;
+        if (isMobileVideoLocked) {
+          isMobileVideoLocked = false;
+          if (mobileLockTimer) clearTimeout(mobileLockTimer);
+        }
+      }
+
+      // Si el usuario ya pasó hacia abajo a la siguiente sección (#impacto), liberar
+      if (scrollDistance > 0 && currentScrollY > containerTop + scrollDistance + 80) {
+        if (isMobileVideoLocked) {
+          isMobileVideoLocked = false;
+          if (mobileLockTimer) clearTimeout(mobileLockTimer);
+        }
+      }
+
+      // Bloqueo suave al entrar al área de los videos desde arriba
+      if (!hasEnteredVideoLock && isScrollingDown) {
+        const rect = container.getBoundingClientRect();
+        if (scrollDistance > 0 && rect.top <= 80 && rect.bottom >= window.innerHeight * 0.4) {
+          const currentP = -rect.top / scrollDistance;
+
+          // Se activa cuando la transición de apertura de los videos está en marcha
+          if (currentP >= 0.12 && currentP <= 0.88) {
+            hasEnteredVideoLock = true;
+            isMobileVideoLocked = true;
+
+            // Posición exacta ideal: el centro del escenario 100% revelado y nítido
+            const targetLockY = containerTop + 0.60 * scrollDistance;
+
+            if (window.lenis) {
+              window.lenis.scrollTo(targetLockY, {
+                duration: 0.60,
+                easing: (t) => 1 - Math.pow(1 - t, 3)
+              });
+            } else {
+              window.scrollTo({
+                top: targetLockY,
+                behavior: "smooth"
+              });
+            }
+
+            // Desbloqueo suave automático tras 2.2 segundos para poder continuar
+            if (mobileLockTimer) clearTimeout(mobileLockTimer);
+            mobileLockTimer = setTimeout(() => {
+              isMobileVideoLocked = false;
+            }, 2200);
+          }
+        }
+      }
+
+      // Si el bloqueo suave está activo, contener cualquier inercia de scroll rápido hacia abajo
+      if (isMobileVideoLocked && scrollDistance > 0) {
+        const targetLockY = containerTop + 0.60 * scrollDistance;
+        if (currentScrollY > targetLockY + 25) {
+          window.scrollTo(0, targetLockY);
+        }
+      }
+    }
+
     // Centrado magnético automático (Settle snap) exclusivo para PC
-    if (window.innerWidth >= 768) {
+    if (!isMobile) {
       clearTimeout(settleTimer);
       settleTimer = setTimeout(() => {
         if (isWheelSnapping) return;
@@ -1390,6 +1477,39 @@ function setupHorizontalScroll() {
     let isDirectionLocked = false;
     let touchStartTime = 0;
 
+    let windowTouchStartY = 0;
+    let windowTouchStartX = 0;
+
+    window.addEventListener("touchstart", (e) => {
+      if (window.innerWidth >= 768) return;
+      if (e.touches.length === 1) {
+        windowTouchStartY = e.touches[0].clientY;
+        windowTouchStartX = e.touches[0].clientX;
+      }
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (e) => {
+      if (window.innerWidth >= 768 || !isMobileVideoLocked) return;
+      if (e.touches.length === 1) {
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const dy = currentY - windowTouchStartY;
+        const dx = currentX - windowTouchStartX;
+
+        // Si es deslizamiento horizontal entre videos, dejarlo operar libremente
+        if (Math.abs(dx) >= Math.abs(dy)) return;
+
+        // Si intenta hacer scroll hacia abajo durante el bloqueo suave:
+        if (dy < -4) {
+          if (e.cancelable) e.preventDefault();
+        } else if (dy > 30) {
+          // Si el usuario quiere volver arriba hacia el Hero, liberar el bloqueo de inmediato
+          isMobileVideoLocked = false;
+          if (mobileLockTimer) clearTimeout(mobileLockTimer);
+        }
+      }
+    }, { passive: false });
+
     const touchArea = document.getElementById("carousel-sticky-wrapper") || container;
     if (touchArea) {
       touchArea.addEventListener("touchstart", (e) => {
@@ -1420,6 +1540,15 @@ function setupHorizontalScroll() {
                 isHorizontalDrag = true;
               } else {
                 isHorizontalDrag = false;
+                if (isMobileVideoLocked) {
+                  if (dy < -4) {
+                    if (e.cancelable) e.preventDefault();
+                    return;
+                  } else if (dy > 30) {
+                    isMobileVideoLocked = false;
+                    if (mobileLockTimer) clearTimeout(mobileLockTimer);
+                  }
+                }
                 isTouchActive = false; // Dejar que el scroll vertical nativo fluya libremente
                 return;
               }

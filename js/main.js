@@ -33,6 +33,7 @@ const i18nDictionary = {
     "social.youtubeSub": "Suscriptores • 148 Videos",
     "social.robloxSub": "Seguidores • Verificado",
     "portal.scrollHint": "Desliza para explorar las campañas de tiendas en video",
+    "portal.mobileSwipe": "Desliza para moverte entre videos",
     "portal.badge": "TRABAJOS ANTERIORES &amp; CAMPAÑAS OFICIALES",
     "portal.title": "Algunos ejemplos de mi trabajo de tiendas o sitios con los que he trabajado",
     "metrics.badge": "MÉTRICAS &amp; IMPACTO REAL",
@@ -137,6 +138,7 @@ const i18nDictionary = {
     "social.youtubeSub": "Subscribers • 148 Videos",
     "social.robloxSub": "Followers • Verified",
     "portal.scrollHint": "Scroll to explore store video campaigns",
+    "portal.mobileSwipe": "Swipe to navigate videos",
     "portal.badge": "PAST WORK &amp; OFFICIAL CAMPAIGNS",
     "portal.title": "Examples of my work with stores and websites I've collaborated with",
     "metrics.badge": "METRICS &amp; REAL IMPACT",
@@ -496,6 +498,124 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.lucide) window.lucide.createIcons();
 });
 
+// ==========================================================================
+// CONTROLADOR DE NAVEGACIÓN TÁCTIL EN MÓVIL (SWIPE HORIZONTAL 1:1)
+// ==========================================================================
+let mobileActiveIndex = 0;
+let mobileCurrentFloat = 0;
+
+function renderMobileDots() {
+  const dotsContainer = document.getElementById("mobileCarouselDots");
+  if (!dotsContainer) return;
+  const filtered = currentFilter === "all" 
+    ? portfolioVideos 
+    : portfolioVideos.filter(v => v.category === currentFilter);
+  const count = filtered.length;
+  
+  dotsContainer.innerHTML = Array.from({ length: count }, (_, i) => `
+    <button 
+      type="button" 
+      class="mobile-dot-btn ${i === mobileActiveIndex ? 'is-active' : ''}" 
+      onclick="goToMobileIndex(${i})"
+      aria-label="Ir al video ${i + 1}"
+    ></button>
+  `).join("");
+
+  updateMobileArrows();
+}
+
+function updateMobileDots(activeIndex) {
+  const dots = document.querySelectorAll("#mobileCarouselDots .mobile-dot-btn");
+  dots.forEach((dot, idx) => {
+    if (idx === activeIndex) {
+      dot.classList.add("is-active");
+    } else {
+      dot.classList.remove("is-active");
+    }
+  });
+  updateMobileArrows();
+}
+
+function updateMobileArrows() {
+  const prevBtn = document.getElementById("mobilePrevBtn");
+  const nextBtn = document.getElementById("mobileNextBtn");
+  const filtered = currentFilter === "all" 
+    ? portfolioVideos 
+    : portfolioVideos.filter(v => v.category === currentFilter);
+  const count = filtered.length;
+
+  if (prevBtn) {
+    if (mobileActiveIndex <= 0) {
+      prevBtn.classList.add("opacity-30", "pointer-events-none");
+    } else {
+      prevBtn.classList.remove("opacity-30", "pointer-events-none");
+    }
+  }
+  if (nextBtn) {
+    if (mobileActiveIndex >= count - 1) {
+      nextBtn.classList.add("opacity-30", "pointer-events-none");
+    } else {
+      nextBtn.classList.remove("opacity-30", "pointer-events-none");
+    }
+  }
+}
+
+window.goToMobileIndex = function(index) {
+  animateMobileToIndex(index);
+};
+
+window.goToMobileNext = function() {
+  animateMobileToIndex(mobileActiveIndex + 1);
+};
+
+window.goToMobilePrev = function() {
+  animateMobileToIndex(mobileActiveIndex - 1);
+};
+
+function animateMobileToIndex(targetIndex) {
+  const filtered = currentFilter === "all" 
+    ? portfolioVideos 
+    : portfolioVideos.filter(v => v.category === currentFilter);
+  const count = filtered.length;
+  if (count <= 0) return;
+
+  targetIndex = Math.max(0, Math.min(targetIndex, count - 1));
+  const fromIndex = mobileCurrentFloat;
+  mobileActiveIndex = targetIndex;
+  updateMobileDots(targetIndex);
+
+  if (Math.abs(fromIndex - targetIndex) < 0.01) {
+    mobileCurrentFloat = targetIndex;
+    update3DCarousel(count > 1 ? targetIndex / (count - 1) : 0);
+    return;
+  }
+
+  const startTime = performance.now();
+  const duration = 280; // Milisegundos de transición elástica fluida
+
+  function stepAnim(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3); // Cubic ease-out
+    const currentVal = fromIndex + (targetIndex - fromIndex) * ease;
+    mobileCurrentFloat = currentVal;
+    update3DCarousel(count > 1 ? currentVal / (count - 1) : 0);
+
+    if (progress < 1) {
+      requestAnimationFrame(stepAnim);
+    } else {
+      mobileCurrentFloat = targetIndex;
+      update3DCarousel(count > 1 ? targetIndex / (count - 1) : 0);
+    }
+  }
+
+  requestAnimationFrame(stepAnim);
+
+  if (typeof playUiSound === "function") {
+    playUiSound("slide");
+  }
+}
+
 function renderVideos() {
   const container = document.getElementById("carousel-track");
   if (!container) return;
@@ -674,7 +794,14 @@ function renderVideos() {
 
   // Reconfigurar scroll horizontal y posicionamiento 3D
   activeCarouselStep = 0;
+  mobileActiveIndex = 0;
+  mobileCurrentFloat = 0;
   setupHorizontalScroll();
+  renderMobileDots();
+  if (window.innerWidth < 768) {
+    updateMobileDots(0);
+    update3DCarousel(0);
+  }
   ensureCarouselVideosPlaying();
   if (window.lucide) window.lucide.createIcons();
 }
@@ -731,6 +858,7 @@ function ensureCarouselVideosPlaying() {
 window.handleCardClick = function(id, index, event) {
   if (event.target.closest('a')) return;
 
+  const isMobile = window.innerWidth < 768;
   const cards = document.querySelectorAll("#carousel-track .carousel-3d-card");
   const clickedCard = cards[index];
   if (!clickedCard) return;
@@ -744,11 +872,20 @@ window.handleCardClick = function(id, index, event) {
     return;
   }
 
-  // Si la tarjeta no está centrada al frente, centrarla primero
-  if (!clickedCard.classList.contains("is-center-active")) {
-    event.preventDefault();
-    scrollToVideoIndex(index);
-    return;
+  // En móvil: si se toca una tarjeta lateral, llevarla suavemente al centro
+  if (isMobile) {
+    if (index !== mobileActiveIndex) {
+      event.preventDefault();
+      animateMobileToIndex(index);
+      return;
+    }
+  } else {
+    // En PC: si la tarjeta no está centrada al frente, centrarla primero
+    if (!clickedCard.classList.contains("is-center-active")) {
+      event.preventDefault();
+      scrollToVideoIndex(index);
+      return;
+    }
   }
 
   // DESMUTEAR / MUTEAR SIN PAUSAR EL VIDEO (Continúa exactamente por donde va)
@@ -840,7 +977,11 @@ window.scrollToCarouselStep = function(step) {
 };
 
 window.scrollToVideoIndex = function(index) {
-  window.scrollToCarouselStep(index);
+  if (window.innerWidth < 768) {
+    animateMobileToIndex(index);
+  } else {
+    window.scrollToCarouselStep(index);
+  }
 };
 
 function update3DCarousel(scrollHProgress) {
@@ -887,6 +1028,9 @@ function update3DCarousel(scrollHProgress) {
     }
   }
   window._lastActiveVideoIndex = activeIntIndex;
+  if (isMobile) {
+    updateMobileDots(activeIntIndex);
+  }
 
   cards.forEach((card, index) => {
     const delta = index - activeFloatIndex;
@@ -1072,9 +1216,9 @@ function setupHorizontalScroll() {
   const count = filtered.length;
 
   function updateContainerDimensions() {
-    // Recorrido vertical calibrado para explorar en 3D en móvil y desktop
+    // Recorrido vertical: en móvil es breve y suave (~700px) solo para abrir el portal; en PC recorre el carrusel completo
     const isMobile = window.innerWidth < 768;
-    const scrollTravel = isMobile ? Math.max(count * 320, 2000) : Math.max(count * 450, 3600);
+    const scrollTravel = isMobile ? 700 : Math.max(count * 450, 3600);
     container.style.height = `${window.innerHeight + scrollTravel}px`;
 
     onScroll();
@@ -1098,59 +1242,77 @@ function setupHorizontalScroll() {
     }
 
     const p = currentProgress;
+    const isMobile = window.innerWidth < 768;
 
     // Al comenzar a transicionar o acercarse al escenario de videos, asegurar reproducción activa continua
     if (p >= 0.02) {
       ensureCarouselVideosPlaying();
     }
 
-    // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS, NUNCA SE SEPARAN)
+    // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS)
     if (archGroup) {
-      const isMobile = window.innerWidth < 768;
-      const baseScale = isMobile ? 0.48 : 1;
-      const scaleVal = baseScale * (1 + p * 3.6);
-      const op = Math.max(0, 1 - p * 3.0);
-      archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
-      archGroup.style.opacity = op.toFixed(3);
+      if (isMobile) {
+        // En móvil: Apertura concéntrica de las capas cuadraditas con zoom fluido y fade hacia afuera
+        const scaleVal = 1 + p * 3.4;
+        const op = Math.max(0, 1 - p * 1.55);
+        archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
+        archGroup.style.opacity = op.toFixed(3);
+        archGroup.style.display = op <= 0.01 ? "none" : "block";
+      } else {
+        const baseScale = 1;
+        const scaleVal = baseScale * (1 + p * 3.6);
+        const op = Math.max(0, 1 - p * 3.0);
+        archGroup.style.transform = `translateX(-50%) scale(${scaleVal.toFixed(4)})`;
+        archGroup.style.opacity = op.toFixed(3);
+        archGroup.style.display = op <= 0.01 ? "none" : "block";
+      }
     }
 
     // 2. EXPANSIÓN DEL ESCENARIO DESDE EL FONDO A PANTALLA COMPLETA
-    const expandProgress = Math.min(Math.max(p / 0.18, 0), 1);
-    const ease = expandProgress * expandProgress * (3 - 2 * expandProgress); // Smoothstep
-
     if (stage) {
-      const isMobile = window.innerWidth < 768;
-      const startW = window.innerWidth > 1400 ? 72 : (isMobile ? 92 : 74);
-      const startH = window.innerHeight < 800 ? (isMobile ? 86 : 78) : 75;
-      const curWidthVw = startW + (100 - startW) * ease;
-      const curHeightVh = startH + (100 - startH) * ease;
+      if (isMobile) {
+        // En móvil: CERO layout thrashing de width/height.
+        // El centro va apareciendo suavemente desde el fondo mientras se hace scroll
+        const revealProgress = Math.min(Math.max(p / 0.60, 0), 1);
+        const smoothReveal = revealProgress * revealProgress * (3 - 2 * revealProgress);
+        const stageScale = 0.92 + 0.08 * smoothReveal;
 
-      // EFECTO DE APARICIÓN PROGRESIVA CON EL SCROLL (REVELACIÓN DE PORTAL)
-      // Comienza invisible (0% opacidad) y aparece suavemente entre p = 0.05 y p = 0.18
-      const revealT = Math.min(Math.max((p - 0.05) / 0.13, 0), 1);
-      const smoothReveal = revealT * revealT * (3 - 2 * revealT); // Cubic smoothstep
-      const stageScale = 0.94 + 0.06 * smoothReveal;
-
-      stage.style.width = `${curWidthVw.toFixed(2)}vw`;
-      stage.style.height = `${curHeightVh.toFixed(2)}vh`;
-      stage.style.transform = `translateX(-50%) scale(${stageScale.toFixed(4)})`;
-      stage.style.opacity = smoothReveal.toFixed(3);
-      stage.style.pointerEvents = smoothReveal < 0.1 ? "none" : "auto";
-      
-      if (ease >= 0.95) {
-        stage.style.zIndex = "30";
+        stage.style.transform = `translateX(-50%) scale(${stageScale.toFixed(4)})`;
+        stage.style.opacity = smoothReveal.toFixed(3);
+        stage.style.pointerEvents = smoothReveal < 0.15 ? "none" : "auto";
+        stage.style.zIndex = smoothReveal > 0.8 ? "30" : "2";
       } else {
-        stage.style.zIndex = "2";
+        const expandProgress = Math.min(Math.max(p / 0.18, 0), 1);
+        const ease = expandProgress * expandProgress * (3 - 2 * expandProgress); // Smoothstep
+        const startW = window.innerWidth > 1400 ? 72 : 74;
+        const startH = window.innerHeight < 800 ? 78 : 75;
+        const curWidthVw = startW + (100 - startW) * ease;
+        const curHeightVh = startH + (100 - startH) * ease;
+
+        const revealT = Math.min(Math.max((p - 0.05) / 0.13, 0), 1);
+        const smoothReveal = revealT * revealT * (3 - 2 * revealT); // Cubic smoothstep
+        const stageScale = 0.94 + 0.06 * smoothReveal;
+
+        stage.style.width = `${curWidthVw.toFixed(2)}vw`;
+        stage.style.height = `${curHeightVh.toFixed(2)}vh`;
+        stage.style.transform = `translateX(-50%) scale(${stageScale.toFixed(4)})`;
+        stage.style.opacity = smoothReveal.toFixed(3);
+        stage.style.pointerEvents = smoothReveal < 0.1 ? "none" : "auto";
+        stage.style.zIndex = ease >= 0.95 ? "30" : "2";
       }
     }
 
     // 3. CARRUSEL 3D CON EFECTO DE PROFUNDIDAD
-    const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.80, 0), 1);
-    update3DCarousel(scrollHProgress);
+    // En PC: Conducido por el scroll vertical fijado
+    // En Móvil: El carrusel se mueve de izquierda a derecha por gestos táctiles directos (swipe 1:1)
+    if (!isMobile) {
+      const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.80, 0), 1);
+      update3DCarousel(scrollHProgress);
+    }
 
     // 4. INDICADOR FLOTANTE DE SCROLL
     if (hint) {
-      hint.style.opacity = Math.max(0, 1 - p * 4).toFixed(3);
+      hint.style.opacity = Math.max(0, 1 - p * 3.5).toFixed(3);
     }
 
     if (Math.abs(targetProgress - currentProgress) > 0.0006) {
@@ -1168,38 +1330,45 @@ function setupHorizontalScroll() {
       requestAnimationFrame(render);
     }
 
-    // Centrado magnético automático (Settle snap): si el usuario usó trackpad o barra y se detuvo entre tarjetas
-    clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => {
-      if (isWheelSnapping) return;
-      const container = document.getElementById("carousel-scroll-container");
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
-      const inPinnedZone = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
-      if (!inPinnedZone) return;
+    // Centrado magnético automático (Settle snap) exclusivo para PC
+    if (window.innerWidth >= 768) {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        if (isWheelSnapping) return;
+        const container = document.getElementById("carousel-scroll-container");
+        if (!container) return;
+        const rect = container.getBoundingClientRect();
+        const inPinnedZone = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
+        if (!inPinnedZone) return;
 
-      if (targetProgress >= 0.18 && targetProgress <= 0.98) {
-        const filtered = currentFilter === "all" 
-          ? portfolioVideos 
-          : portfolioVideos.filter(v => v.category === currentFilter);
-        const count = filtered.length;
-        if (count <= 1) return;
+        if (targetProgress >= 0.18 && targetProgress <= 0.98) {
+          const filtered = currentFilter === "all" 
+            ? portfolioVideos 
+            : portfolioVideos.filter(v => v.category === currentFilter);
+          const count = filtered.length;
+          if (count <= 1) return;
 
-        const maxStep = count - 1;
-        const shp = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
-        const currentStepFloat = shp * maxStep;
-        const nearestStep = Math.round(currentStepFloat);
+          const maxStep = count - 1;
+          const shp = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
+          const currentStepFloat = shp * maxStep;
+          const nearestStep = Math.round(currentStepFloat);
 
-        if (Math.abs(currentStepFloat - nearestStep) > 0.05) {
-          activeCarouselStep = nearestStep;
-          scrollToCarouselStep(nearestStep);
+          if (Math.abs(currentStepFloat - nearestStep) > 0.05) {
+            activeCarouselStep = nearestStep;
+            scrollToCarouselStep(nearestStep);
+          }
         }
-      }
-    }, 220);
+      }, 220);
+    }
   }
 
   updateContainerDimensions();
-  update3DCarousel(0);
+  if (window.innerWidth < 768) {
+    update3DCarousel(0);
+    updateMobileDots(0);
+  } else {
+    update3DCarousel(0);
+  }
 
   if (!scrollListenerAttached) {
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1207,55 +1376,104 @@ function setupHorizontalScroll() {
     window.addEventListener("resize", () => {
       updateContainerDimensions();
       render();
+      if (window.innerWidth < 768) {
+        updateMobileDots(mobileActiveIndex);
+      }
     }, { passive: true });
 
-    // Soporte de gestos táctiles (Touch Swipe izquierda/derecha) para teléfonos móviles
+    // Soporte de gestos táctiles (Touch Swipe izquierda/derecha fluido 1:1) para teléfonos móviles
     let touchStartX = 0;
     let touchStartY = 0;
+    let touchCurrentX = 0;
+    let isTouchActive = false;
+    let isHorizontalDrag = false;
+    let isDirectionLocked = false;
     let touchStartTime = 0;
-    let isHorizontalSwipe = false;
 
     const touchArea = document.getElementById("carousel-sticky-wrapper") || container;
     if (touchArea) {
       touchArea.addEventListener("touchstart", (e) => {
+        if (window.innerWidth >= 768) return;
         if (e.touches.length === 1) {
           touchStartX = e.touches[0].clientX;
           touchStartY = e.touches[0].clientY;
-          touchStartTime = Date.now();
-          isHorizontalSwipe = false;
+          touchCurrentX = touchStartX;
+          touchStartTime = performance.now();
+          isTouchActive = true;
+          isHorizontalDrag = false;
+          isDirectionLocked = false;
         }
       }, { passive: true });
 
       touchArea.addEventListener("touchmove", (e) => {
+        if (window.innerWidth >= 768 || !isTouchActive) return;
         if (e.touches.length === 1) {
-          const dx = e.touches[0].clientX - touchStartX;
-          const dy = e.touches[0].clientY - touchStartY;
-          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-            isHorizontalSwipe = true;
-          }
-        }
-      }, { passive: true });
+          const cx = e.touches[0].clientX;
+          const cy = e.touches[0].clientY;
+          const dx = cx - touchStartX;
+          const dy = cy - touchStartY;
 
-      touchArea.addEventListener("touchend", (e) => {
-        if (isHorizontalSwipe) {
-          const touchEndX = e.changedTouches[0].clientX;
-          const dx = touchEndX - touchStartX;
-          const dt = Date.now() - touchStartTime;
-          if (Math.abs(dx) > 35 && dt < 600) {
-            const filtered = currentFilter === "all" ? portfolioVideos : portfolioVideos.filter(v => v.category === currentFilter);
-            const count = filtered.length;
-            if (dx < 0) {
-              if (activeCarouselStep < count - 1) {
-                activeCarouselStep++;
-                scrollToCarouselStep(activeCarouselStep);
-              }
-            } else {
-              if (activeCarouselStep > 0) {
-                activeCarouselStep--;
-                scrollToCarouselStep(activeCarouselStep);
+          if (!isDirectionLocked) {
+            if (Math.abs(dx) > 7 || Math.abs(dy) > 7) {
+              isDirectionLocked = true;
+              if (Math.abs(dx) >= Math.abs(dy)) {
+                isHorizontalDrag = true;
+              } else {
+                isHorizontalDrag = false;
+                isTouchActive = false; // Dejar que el scroll vertical nativo fluya libremente
+                return;
               }
             }
           }
+
+          if (isHorizontalDrag) {
+            if (e.cancelable) e.preventDefault();
+            touchCurrentX = cx;
+            const filtered = currentFilter === "all" 
+              ? portfolioVideos 
+              : portfolioVideos.filter(v => v.category === currentFilter);
+            const count = filtered.length;
+            if (count > 1) {
+              const stepDist = window.innerWidth < 400 ? 172 : 192;
+              const deltaIndex = -dx / stepDist;
+              const liveIndex = Math.max(0, Math.min(count - 1, mobileActiveIndex + deltaIndex));
+              mobileCurrentFloat = liveIndex;
+              update3DCarousel(liveIndex / (count - 1));
+            }
+          }
+        }
+      }, { passive: false });
+
+      touchArea.addEventListener("touchend", (e) => {
+        if (window.innerWidth >= 768 || !isTouchActive) return;
+        isTouchActive = false;
+
+        if (isHorizontalDrag) {
+          const dx = touchCurrentX - touchStartX;
+          const dt = Math.max(1, performance.now() - touchStartTime);
+          const velocity = Math.abs(dx) / dt;
+
+          const filtered = currentFilter === "all" 
+            ? portfolioVideos 
+            : portfolioVideos.filter(v => v.category === currentFilter);
+          const count = filtered.length;
+
+          let targetIndex = mobileActiveIndex;
+          if (dx < -35 || (dx < -15 && velocity > 0.25)) {
+            targetIndex = Math.min(count - 1, mobileActiveIndex + 1);
+          } else if (dx > 35 || (dx > 15 && velocity > 0.25)) {
+            targetIndex = Math.max(0, mobileActiveIndex - 1);
+          }
+
+          animateMobileToIndex(targetIndex);
+        }
+      }, { passive: true });
+
+      touchArea.addEventListener("touchcancel", () => {
+        if (window.innerWidth >= 768) return;
+        isTouchActive = false;
+        if (isHorizontalDrag) {
+          animateMobileToIndex(mobileActiveIndex);
         }
       }, { passive: true });
     }

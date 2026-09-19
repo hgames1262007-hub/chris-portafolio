@@ -316,6 +316,26 @@
               </div>
             </div>
 
+            <!-- Barra de Navegación Móvil Táctil (Flechas, Dots y Hint de Deslizar) -->
+            <div id="mobileCarouselNav" class="mobile-carousel-controls flex md:hidden flex-col items-center justify-center gap-1.5 w-full select-none mt-1">
+              <div class="flex items-center justify-center gap-3">
+                <button id="mobilePrevBtn" type="button" aria-label="Video anterior" class="mobile-nav-arrow-btn" onclick="goToMobilePrev()">
+                  <svg class="w-3.5 h-3.5 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <div id="mobileCarouselDots" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-100/70 border border-orange-200/60 shadow-2xs">
+                  <!-- Dots dinámicos renderizados por JS -->
+                </div>
+                <button id="mobileNextBtn" type="button" aria-label="Siguiente video" class="mobile-nav-arrow-btn" onclick="goToMobileNext()">
+                  <svg class="w-3.5 h-3.5 text-orange-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-stone-100/85 border border-stone-200/60 text-[9.5px] font-heading font-bold text-stone-600">
+                <span class="text-orange-500">👈</span>
+                <span data-i18n="portal.mobileSwipe">Desliza para moverte entre videos</span>
+                <span class="text-orange-500">👉</span>
+              </div>
+            </div>
+
           </div>
 
           <!-- Grupo Unificado de Capas Concéntricas (SE MANTIENEN 100% UNIDAS, NUNCA SE SEPARAN) -->

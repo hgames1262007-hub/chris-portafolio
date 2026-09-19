@@ -498,23 +498,17 @@
 
         <div class="flex flex-col h-full justify-between gap-4">
           <!-- Top: Avatar & Identidad -->
-          <div class="flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-md flex-shrink-0 bg-[#1c120c] p-0.5">
-                <img src="assets/chris-avatar-square.png" alt="Chris" class="w-full h-full object-cover rounded-xl">
-              </div>
-              <div>
-                <div class="font-heading font-black text-sm text-[#1c120c] flex items-center gap-1.5">
-                  <span>Chris</span>
-                  <span class="text-[10px] font-heading font-extrabold text-orange-700 bg-orange-100 px-1.5 py-0.5 rounded border border-orange-300" data-i18n="bento.official">Oficial</span>
-                </div>
-                <div class="text-[11px] text-stone-500 font-heading font-bold" data-i18n="bento.creator">@Chrixmm2 • Creador de Contenido</div>
-              </div>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-md flex-shrink-0 bg-[#1c120c] p-0.5">
+              <img src="assets/chris-avatar-square.png" alt="Chris" class="w-full h-full object-cover rounded-xl">
             </div>
-            <span class="inline-flex items-center gap-1 text-[10px] font-heading font-black text-emerald-700 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span data-i18n="bento.slots">Cupos 2/3</span>
-            </span>
+            <div>
+              <div class="font-heading font-black text-sm text-[#1c120c] flex items-center gap-1.5">
+                <span>Chris</span>
+                <span class="text-[10px] font-heading font-extrabold text-orange-700 bg-orange-100 px-1.5 py-0.5 rounded border border-orange-300" data-i18n="bento.official">Oficial</span>
+              </div>
+              <div class="text-[11px] text-stone-500 font-heading font-bold" data-i18n="bento.creator">@Chrixmm2 • Creador de Contenido</div>
+            </div>
           </div>
 
           <!-- Declaración / Cita Oficial de Chris -->
@@ -1118,8 +1112,9 @@
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-orange-200/60 py-8 text-center text-xs text-stone-600 font-heading font-medium">
-    <div class="flex items-center justify-center flex-wrap gap-4 sm:gap-6 mb-3 text-stone-600 text-xs font-heading">
+  <footer class="border-t border-orange-200/60 py-10 text-center text-xs text-stone-600 font-heading font-medium">
+    <!-- Redes Sociales de Chris -->
+    <div class="flex items-center justify-center flex-wrap gap-4 sm:gap-6 mb-5 text-stone-600 text-xs font-heading">
       <a href="https://www.tiktok.com/@chrix.mm2?_r=1&_t=ZS-99pvCI0pyA3" target="_blank" rel="noopener noreferrer" class="hover:text-orange-600 transition-colors font-bold">
         TikTok (301.7K)
       </a>
@@ -1132,7 +1127,47 @@
         Roblox (@Chrixxmm2)
       </a>
     </div>
-    <p class="text-[11px] text-stone-500" data-i18n="footer.copy">Chrixmm2 • Videos publicitarios para tiendas y páginas de Roblox © 2026</p>
+
+    <!-- Bloque de Créditos -->
+    <div class="max-w-2xl mx-auto px-4 mb-5">
+      <div class="p-4 sm:p-5 rounded-2xl bg-white/85 border border-orange-200/80 shadow-2xs backdrop-blur-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        
+        <!-- Creador de Contenido: Chris -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl overflow-hidden border-2 border-orange-400 flex-shrink-0 bg-[#1c120c] p-0.5 shadow-xs">
+            <img src="assets/chris-avatar-square.png" alt="Chris" class="w-full h-full object-cover rounded-lg">
+          </div>
+          <div class="text-left">
+            <span class="text-[10px] font-heading font-extrabold uppercase tracking-wider text-orange-600 block leading-tight" data-i18n="footer.creatorLabel">Creador de Contenido</span>
+            <span class="text-xs sm:text-sm font-heading font-black text-[#1c120c]">Chris <span class="text-stone-500 font-bold text-xs">(@Chrixmm2)</span></span>
+          </div>
+        </div>
+
+        <!-- Divisor sutil en móviles -->
+        <div class="w-full h-px bg-orange-100 sm:hidden"></div>
+
+        <!-- Créditos y Desarrollador: SrPictus -->
+        <div class="flex items-center gap-3 sm:text-right">
+          <div class="text-center sm:text-right">
+            <span class="text-[10px] font-heading font-extrabold uppercase tracking-wider text-stone-500 block leading-tight" data-i18n="footer.creditsTitle">Créditos</span>
+            <div class="text-xs sm:text-sm font-heading font-bold text-[#1c120c]">
+              <span data-i18n="footer.builtBy">Página hecha por</span> <strong class="font-black text-orange-600">SrPictus</strong>
+            </div>
+            <a href="mailto:SrPictus@gmail.com" class="text-[11px] font-medium text-stone-500 hover:text-orange-600 transition-colors inline-flex items-center gap-1 mt-0.5" title="Enviar correo a SrPictus">
+              <svg class="w-3 h-3 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <span>SrPictus@gmail.com</span>
+            </a>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white font-heading font-black text-xs flex items-center justify-center shadow-xs flex-shrink-0 select-none">
+            SP
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <p class="text-[11px] text-stone-400 font-medium" data-i18n="footer.copy">© 2026 ChrisMm2 • Todos los derechos reservados</p>
   </footer>
 
   <!-- Modal de Video Vertical -->

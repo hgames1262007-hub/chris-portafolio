@@ -225,11 +225,10 @@ const portfolioVideos = [
     status: "confirmed",
     badge: "Gift Cards & Robux",
     badge_en: "Gift Cards & Robux",
-    title: "Promoción de recargas oficiales y gift cards de Roblox para Latinoamérica",
-    title_en: "Official Roblox recharges & gift cards promo for Latin America",
+    title: "Promoción de recargas y gift cards de Roblox para Latinoamérica",
+    title_en: "Roblox recharges & gift cards promo for Latin America",
     format: "TikTok 9:16",
-    logoBg: "bg-gradient-to-br from-yellow-400 to-amber-500 text-stone-950 border border-amber-300 shadow-amber-500/20",
-    logoSvg: `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12zm-7-8c-1.66 0-3-1.34-3-3H7c0 2.76 2.24 5 5 5s5-2.24 5-5h-2c0 1.66-1.34 3-3 3z"/></svg>`,
+    logoSrc: "assets/brands/bonoxs-favicon.ico",
     driveLink: "https://drive.google.com/file/d/1vsRkUGK6gnWfOTGY07NXdEMn4CBapCyD/view?usp=drivesdk",
     videoSrc: "assets/videos/Bonoxs.mp4"
   },
@@ -244,8 +243,7 @@ const portfolioVideos = [
     title: "Comprando Huge Pets y tradeando ítems exclusivos de Pet Simulator 99",
     title_en: "Buying Huge Pets & trading exclusive Pet Simulator 99 items",
     format: "TikTok 9:16",
-    logoBg: "bg-gradient-to-br from-blue-600 to-indigo-700 text-white border border-blue-400/40 shadow-blue-500/20",
-    logoSvg: `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 8.7L4.5 7 12 3.3 19.5 7 12 10.7zM2 17l10 5 10-5v-3.3l-10 5-10-5V17zm0-5l10 5 10-5V8.7l-10 5-10-5V12z"/></svg>`,
+    logoSrc: "assets/brands/sellitems-favicon.ico",
     driveLink: "https://drive.google.com/file/d/13WH1dmTemyAOHpNAzGIOiQXihuD_mRls/view?usp=drivesdk",
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
   },
@@ -260,8 +258,7 @@ const portfolioVideos = [
     title: "Tutorial del sistema de intercambio y compra de Robux paso a paso",
     title_en: "Step-by-step tutorial on swapping & buying Robux",
     format: "TikTok 9:16",
-    logoBg: "bg-gradient-to-br from-amber-500 to-orange-600 text-white border border-amber-300/40 shadow-amber-500/20",
-    logoSvg: `<svg class="w-5 h-5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>`,
+    logoSrc: "assets/brands/roswap-favicon.ico",
     driveLink: "https://drive.google.com/file/d/17PM-JkoNBTshEhseKej2a5O5QX2Tyz3b/view?usp=drivesdk",
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
   },
@@ -276,8 +273,7 @@ const portfolioVideos = [
     title: "Showcase de armas Godlys más baratas y proceso de entrega rápida",
     title_en: "Cheapest MM2 Godlys weapons showcase & fast delivery process",
     format: "Shorts 9:16",
-    logoBg: "bg-black text-white border border-red-500/50 shadow-red-500/30",
-    logoSvg: `<span class="font-display font-black text-xs tracking-tight text-white select-none">MM<span class="text-red-500 font-black">2</span></span>`,
+    logoSrc: "assets/mm2shop-logo.png",
     driveLink: "https://drive.google.com/file/d/1R0I9pTIvSSPnb5msRJ8iOEZT6HLmw1qN/view?usp=drivesdk",
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
   },
@@ -292,8 +288,7 @@ const portfolioVideos = [
     title: "Cómo tradear armas y Godlys de MM2 al instante en menos de 2 minutos sin estafas",
     title_en: "How to trade MM2 Godlys & weapons instantly under 2 min scam-free",
     format: "TikTok 9:16",
-    logoBg: "bg-gradient-to-br from-orange-500 to-red-600 text-white border border-orange-300/40 shadow-orange-500/20",
-    logoSvg: `<svg class="w-5 h-5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>`,
+    logoSrc: "assets/brands/bloxswaps-favicon.ico",
     driveLink: "https://drive.google.com/file/d/1XRuCfoU-_AkR2jTE8Q2JPqQgoQU3WERR/view?usp=drivesdk",
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
   },
@@ -624,12 +619,12 @@ function renderVideos() {
         <!-- Capa de atenuación de profundidad para tarjetas secundarias -->
         <div class="card-depth-overlay"></div>
 
-        <!-- LOGO Y MARCA POR ENCIMA DEL VIDEO -->
+        <!-- LOGO Y MARCA POR ENCIMA DEL VIDEO (SIN 'OFICIAL' Y CON LOGO REAL) -->
         <div class="brand-badge-header px-3.5 py-2.5 flex items-center justify-between border-b border-orange-100/90 flex-shrink-0">
-          <!-- Logo y Nombre de Marca -->
+          <!-- Logo Real y Nombre de Marca -->
           <div class="flex items-center gap-2.5 min-w-0">
-            <div class="brand-logo-badge w-9 h-9 rounded-xl flex items-center justify-center font-black font-heading text-sm shadow-xs flex-shrink-0 ${video.logoBg}">
-              ${video.logoSvg}
+            <div class="w-9 h-9 rounded-xl p-1.5 flex items-center justify-center flex-shrink-0 border border-stone-200/90 bg-white shadow-2xs group-hover:scale-105 transition-transform">
+              <img src="${video.logoSrc}" alt="Logo ${video.site}" class="w-full h-full object-contain">
             </div>
             <div class="min-w-0 text-left">
               <h4 class="font-heading font-black text-xs sm:text-sm text-[#1c120c] truncate leading-tight">${video.site === 'MM2Shop' ? 'MM<span class="text-red-600 font-black text-[1.08em]">2</span>Shop' : video.site}</h4>
@@ -637,24 +632,18 @@ function renderVideos() {
             </div>
           </div>
 
-          <!-- Indicador de Estado: Oficial -->
-          <div class="flex flex-col items-end gap-1 flex-shrink-0">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-heading font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-              <span>${currentLang === 'en' ? 'Official' : 'Oficial'}</span>
-            </span>
-            <a 
-              href="${video.siteUrl}" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              onclick="event.stopPropagation()"
-              class="text-[9px] font-heading text-orange-600 hover:text-orange-700 font-bold flex items-center gap-0.5 transition-colors"
-              title="Visitar sitio"
-            >
-              <span>${currentLang === 'en' ? 'Website' : 'Sitio web'}</span>
-              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-          </div>
+          <!-- Enlace Directo al Sitio Web (Sin el badge 'Oficial') -->
+          <a 
+            href="${video.siteUrl}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onclick="event.stopPropagation()"
+            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[9.5px] font-heading font-bold text-orange-600 hover:text-orange-700 bg-orange-50/90 hover:bg-orange-100 border border-orange-200/80 shadow-2xs transition-all hover:scale-105 flex-shrink-0"
+            title="${currentLang === 'en' ? 'Visit website' : 'Visitar sitio web'}"
+          >
+            <span>${currentLang === 'en' ? 'Website' : 'Sitio web'}</span>
+            <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
         </div>
 
         <!-- MARCO VERTICAL 9:16 (Video 100% Limpio y Despejado) -->

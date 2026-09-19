@@ -960,7 +960,7 @@ window.scrollToCarouselStep = function(step) {
   if (scrollDistance <= 0) return;
 
   const normalizedProgress = maxStep > 0 ? targetStep / maxStep : 0;
-  const targetP = 0.20 + normalizedProgress * 0.80;
+  const targetP = 0.20 + normalizedProgress * 0.72;
   const containerTop = container.getBoundingClientRect().top + window.scrollY;
   const targetY = containerTop + targetP * scrollDistance;
 
@@ -1151,7 +1151,7 @@ function handleCarouselWheel(e) {
   if (Math.abs(deltaY) < 16) return;
 
   const maxStep = count - 1;
-  const scrollHProgress = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
+  const scrollHProgress = Math.min(Math.max((targetProgress - 0.20) / 0.72, 0), 1);
   if (!isWheelSnapping) {
     activeCarouselStep = Math.round(scrollHProgress * maxStep);
   }
@@ -1183,6 +1183,9 @@ function handleCarouselWheel(e) {
           isWheelSnapping = false;
         }, 520);
       }
+    } else {
+      // En el último video (maxStep), permitir que el scroll continúe naturalmente hacia abajo a #impacto
+      return;
     }
   } else if (deltaY < -16) {
     // Scroll hacia ARRIBA
@@ -1219,9 +1222,9 @@ function setupHorizontalScroll() {
   const count = filtered.length;
 
   function updateContainerDimensions() {
-    // Recorrido vertical: en móvil es suave y cómodo (~900px) solo para abrir el portal; en PC recorre el carrusel completo
+    // Recorrido vertical en PC y móvil calibrado: sin distancias kilométricas ni espacios muertos
     const isMobile = window.innerWidth < 768;
-    const scrollTravel = isMobile ? 900 : Math.max(count * 450, 3600);
+    const scrollTravel = isMobile ? 650 : Math.max(count * 280, 1600);
     container.style.height = `${window.innerHeight + scrollTravel}px`;
 
     onScroll();
@@ -1309,7 +1312,7 @@ function setupHorizontalScroll() {
     // En PC: Conducido por el scroll vertical fijado
     // En Móvil: El carrusel se mueve de izquierda a derecha por gestos táctiles directos (swipe 1:1)
     if (!isMobile) {
-      const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.80, 0), 1);
+      const scrollHProgress = Math.min(Math.max((p - 0.20) / 0.72, 0), 1);
       update3DCarousel(scrollHProgress);
     }
 
@@ -1428,7 +1431,9 @@ function setupHorizontalScroll() {
         const inPinnedZone = rect.top <= 20 && rect.bottom >= window.innerHeight - 20;
         if (!inPinnedZone) return;
 
-        if (targetProgress >= 0.18 && targetProgress <= 0.98) {
+        // Solo ajustar entre videos intermedios (entre 0.22 y 0.88)
+        // Si el usuario pasa de 0.88 hacia abajo, no atraparlo: dejar que fluya libremente hacia #impacto
+        if (targetProgress >= 0.22 && targetProgress <= 0.88) {
           const filtered = currentFilter === "all" 
             ? portfolioVideos 
             : portfolioVideos.filter(v => v.category === currentFilter);
@@ -1436,7 +1441,7 @@ function setupHorizontalScroll() {
           if (count <= 1) return;
 
           const maxStep = count - 1;
-          const shp = Math.min(Math.max((targetProgress - 0.20) / 0.80, 0), 1);
+          const shp = Math.min(Math.max((targetProgress - 0.20) / 0.72, 0), 1);
           const currentStepFloat = shp * maxStep;
           const nearestStep = Math.round(currentStepFloat);
 

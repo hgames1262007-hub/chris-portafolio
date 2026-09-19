@@ -43,8 +43,7 @@ html.lenis, html.lenis body {
 }
 
 html {
-  overflow-x: hidden !important;
-  overflow-x: clip !important;
+  overflow-x: clip;
   width: 100%;
   max-width: 100%;
 }
@@ -53,8 +52,7 @@ body {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #1c120c;
   background-color: #faf8f5;
-  overflow-x: hidden !important;
-  overflow-x: clip !important;
+  overflow-x: clip;
   width: 100%;
   max-width: 100%;
   position: relative;
@@ -2014,21 +2012,12 @@ dialog::backdrop {
 #tiendas {
   position: relative;
   width: 100%;
-  max-width: 100%;
-  overflow-x: clip !important;
-  overflow-x: hidden !important;
-  contain: paint;
 }
 
 .mixpanel-portal-track {
   position: relative;
   width: 100%;
-  max-width: 100%;
-  height: 300vh;
   z-index: 10;
-  overflow-x: clip !important;
-  overflow-x: hidden !important;
-  contain: paint;
 }
 
 .mixpanel-portal-sticky {
@@ -2042,9 +2031,7 @@ dialog::backdrop {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  overflow: hidden !important;
-  overflow-x: clip !important;
-  contain: paint;
+  overflow: hidden;
   background: radial-gradient(ellipse at 50% 12%, rgba(254, 243, 199, 0.45) 0%, #fffbf7 50%, #fffaf5 100%);
 }
 
@@ -2056,9 +2043,7 @@ dialog::backdrop {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  overflow: hidden !important;
-  overflow-x: clip !important;
-  contain: paint;
+  overflow: hidden;
 }
 
 /* Grupo Unificado de Capas Concéntricas: Se escalan juntas como un solo bloque sólido (NUNCA SE SEPARAN) */

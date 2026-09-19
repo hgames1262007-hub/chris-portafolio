@@ -106,14 +106,30 @@ const i18nDictionary = {
     "contact.detailsLabel": "Detalles del video o campaña *",
     "contact.detailsPlaceholder": "Cuéntame sobre tu proyecto o qué deseas promocionar...",
     "contact.submitBtn": "Mandar propuesta ahora",
-    "contact.feedbackSuccess": "✅ ¡Mensaje recibido! Te responderé muy pronto.",
+    "contact.feedbackSuccess": "¡Propuesta enviada con éxito!",
+    "contact.feedbackDiscordSub": "Para acordar el guión y cuadrar tu video hoy mismo sin intermediarios, entra al Discord oficial de Chris:",
+    "contact.joinDiscordDirect": "Unirse al Discord de Chris 🤝",
+    "contact.openDiscordModalLink": "Abrir panel completo de Discord",
     "footer.creatorLabel": "Creador de Contenido",
     "footer.creditsTitle": "Créditos",
     "footer.builtBy": "Página hecha por",
     "footer.copy": "© 2026 ChrisMm2 • Todos los derechos reservados",
     "modal.format": "Formato vertical 1080x1920 (TikTok / Shorts)",
     "modal.driveBtn": "Ver video en Google Drive",
-    "modal.fallback": "Tu navegador no soporta video."
+    "modal.fallback": "Tu navegador no soporta video.",
+    "discordModal.badge": "¡PROPUESTA ENVIADA! • RESPUESTA INMEDIATA",
+    "discordModal.title": "¡Hablemos directo por Discord!",
+    "discordModal.desc": "Tu propuesta ya fue registrada. Para coordinar los detalles de tu video hoy mismo y evitar que los correos se traspapelen, entra a nuestro servidor de colaboraciones.",
+    "discordModal.serverName": "Chrix collaborations 🤝",
+    "discordModal.serverTag": "Servidor Oficial de Colaboraciones",
+    "discordModal.statusOnline": "Chris en línea • @chrixmm2",
+    "discordModal.step1": "Únete al servidor oficial con el botón de abajo.",
+    "discordModal.step2": "Ve al canal general o toca el perfil de Chris (<strong>@chrixmm2</strong>).",
+    "discordModal.step3": "Mándale mensaje directo con el nombre de tu tienda y cuadran la promo de inmediato.",
+    "discordModal.joinBtn": "Unirse a Chrix collaborations 🤝",
+    "discordModal.copyUserBtn": "Copiar: chrixmm2",
+    "discordModal.copied": "¡Copiado: chrixmm2! ✨",
+    "discordModal.closeBtn": "Continuar en la web"
   },
   en: {
     "nav.subtitle": "VIDEOS FOR ROBLOX STORES",
@@ -211,14 +227,30 @@ const i18nDictionary = {
     "contact.detailsLabel": "Video or campaign details *",
     "contact.detailsPlaceholder": "Tell me about your project or what you want to promote...",
     "contact.submitBtn": "Send proposal now",
-    "contact.feedbackSuccess": "✅ Message received! I will reply very soon.",
+    "contact.feedbackSuccess": "Proposal sent successfully!",
+    "contact.feedbackDiscordSub": "To agree on the script and finalize your video today without middlemen, join Chris's official Discord:",
+    "contact.joinDiscordDirect": "Join Chris's Discord 🤝",
+    "contact.openDiscordModalLink": "Open full Discord panel",
     "footer.creatorLabel": "Content Creator",
     "footer.creditsTitle": "Credits",
     "footer.builtBy": "Website built by",
     "footer.copy": "© 2026 ChrisMm2 • All rights reserved",
     "modal.format": "Vertical format 1080x1920 (TikTok / Shorts)",
     "modal.driveBtn": "Watch video on Google Drive",
-    "modal.fallback": "Your browser does not support video playback."
+    "modal.fallback": "Your browser does not support video playback.",
+    "discordModal.badge": "PROPOSAL SENT! • FAST RESPONSE",
+    "discordModal.title": "Let's talk directly on Discord!",
+    "discordModal.desc": "Your proposal has been registered. To coordinate your video details today and prevent emails from getting buried, join our collaborations server.",
+    "discordModal.serverName": "Chrix collaborations 🤝",
+    "discordModal.serverTag": "Official Collaborations Server",
+    "discordModal.statusOnline": "Chris online • @chrixmm2",
+    "discordModal.step1": "Join the official server with the button below.",
+    "discordModal.step2": "Go to the general channel or tap Chris's profile (<strong>@chrixmm2</strong>).",
+    "discordModal.step3": "Send a direct message with your store name to agree on the promo right away.",
+    "discordModal.joinBtn": "Join Chrix collaborations 🤝",
+    "discordModal.copyUserBtn": "Copy: chrixmm2",
+    "discordModal.copied": "Copied: chrixmm2! ✨",
+    "discordModal.closeBtn": "Continue browsing"
   }
 };
 
@@ -486,6 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setLanguage(currentLang);
   setupFilterTabs();
   setupModal();
+  setupDiscordModal();
   setupClipboardCopy();
   setupContactForm();
   setupTopProgressBar();
@@ -1617,6 +1650,131 @@ window.closeVideoModal = function() {
   }
 };
 
+// ==========================================================================
+// MODAL / PANEL DE DISCORD OFICIAL (CHRIX COLLABORATIONS)
+// ==========================================================================
+function setupDiscordModal() {
+  const dialog = document.getElementById("discord-dialog");
+  if (!dialog) return;
+
+  dialog.addEventListener("click", (e) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog = (
+      rect.top <= e.clientY &&
+      e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX &&
+      e.clientX <= rect.left + rect.width
+    );
+    if (!isInDialog) closeDiscordModal();
+  });
+
+  dialog.addEventListener("cancel", () => closeDiscordModal());
+}
+
+window.openDiscordModal = function() {
+  const dialog = document.getElementById("discord-dialog");
+  if (!dialog) return;
+
+  if (typeof playUiSound === "function") {
+    playUiSound("modal-open");
+  }
+
+  if (window.lenis && typeof window.lenis.stop === "function") {
+    window.lenis.stop();
+  }
+
+  try {
+    if (typeof dialog.showModal === "function") {
+      if (!dialog.open) {
+        dialog.showModal();
+      }
+    } else {
+      dialog.setAttribute("open", "");
+    }
+  } catch (err) {
+    dialog.setAttribute("open", "");
+  }
+
+  if (window.lucide && typeof window.lucide.createIcons === "function") {
+    window.lucide.createIcons();
+  }
+};
+
+window.closeDiscordModal = function() {
+  const dialog = document.getElementById("discord-dialog");
+  if (typeof playUiSound === "function") {
+    playUiSound("modal-close");
+  }
+  if (dialog) {
+    try {
+      if (typeof dialog.close === "function" && dialog.open) {
+        dialog.close();
+      } else {
+        dialog.removeAttribute("open");
+      }
+    } catch (e) {
+      dialog.removeAttribute("open");
+    }
+  }
+  if (window.lenis && typeof window.lenis.start === "function") {
+    window.lenis.start();
+  }
+};
+
+window.copyDiscordUser = function() {
+  const userTag = "chrixmm2";
+  if (typeof playUiSound === "function") {
+    playUiSound("chip");
+  }
+
+  const triggerFeedback = () => {
+    const textSpan = document.getElementById("discord-copy-text");
+    const copyBtn = document.getElementById("discord-modal-copy-btn");
+    if (textSpan) {
+      const origText = textSpan.innerHTML;
+      const copiedText = currentLang === "en" ? "Copied: chrixmm2! ✨" : "¡Copiado: chrixmm2! ✨";
+      textSpan.innerHTML = copiedText;
+      if (copyBtn) copyBtn.classList.add("copy-success-pulse", "bg-emerald-600/30", "border-emerald-500/50", "text-emerald-300");
+      setTimeout(() => {
+        textSpan.innerHTML = origText;
+        if (copyBtn) copyBtn.classList.remove("copy-success-pulse", "bg-emerald-600/30", "border-emerald-500/50", "text-emerald-300");
+      }, 2200);
+    }
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(userTag).then(triggerFeedback).catch(() => {
+      fallbackCopyText(userTag);
+      triggerFeedback();
+    });
+  } else {
+    fallbackCopyText(userTag);
+    triggerFeedback();
+  }
+};
+
+function fallbackCopyText(text) {
+  try {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+  } catch (err) {
+    console.warn("Fallback copy failed:", err);
+  }
+}
+
+window.handleDiscordJoinClick = function() {
+  if (typeof playUiSound === "function") {
+    playUiSound("btn-click");
+  }
+};
+
 
 function setupClipboardCopy() {
   const copyEmailBtn = document.getElementById("copy-email-btn");
@@ -1827,13 +1985,13 @@ function setupContactForm() {
       <span>${sendingText}</span>
     `;
 
-    // Enviar LOG a Discord (canal 1550640116366712862 y mención al dueño 1477397898197995592)
-    await sendDiscordContactLog({
+    // Enviar LOG a Discord en segundo plano sin bloquear la interfaz
+    sendDiscordContactLog({
       store: storeVal,
       contact: contactVal,
       service: serviceVal,
       details: detailsVal
-    });
+    }).catch(err => console.warn("[Discord Log] Background send error:", err));
 
     setTimeout(() => {
       btn.disabled = false;
@@ -1851,9 +2009,11 @@ function setupContactForm() {
       }
       if (feedback) {
         feedback.classList.remove("hidden");
-        setTimeout(() => feedback.classList.add("hidden"), 6000);
       }
-    }, 450);
+
+      // Abrir inmediatamente el panel modal de Discord oficial de Chris
+      openDiscordModal();
+    }, 250);
   });
 }
 

@@ -665,8 +665,34 @@ dialog::backdrop {
   box-shadow: 0 32px 85px -12px rgba(234, 88, 12, 0.42), 0 0 0 2.5px rgba(249, 115, 22, 0.4), 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
+/* Tarjeta con video desmuteado y activo con sonido */
+.carousel-3d-card.is-video-unmuted {
+  border-color: #ea580c !important;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.5), 0 35px 85px -10px rgba(234, 88, 12, 0.45), 0 0 35px rgba(245, 158, 11, 0.3) !important;
+}
+
 .carousel-3d-card.is-center-active .tiktok-frame video {
   opacity: 0.92;
+}
+
+.carousel-3d-card.is-video-unmuted .tiktok-frame video {
+  opacity: 1 !important;
+}
+
+.sound-toggle-badge {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sound-toggle-badge:hover {
+  transform: scale(1.06);
+}
+
+.carousel-3d-card.is-video-unmuted .sound-toggle-badge {
+  background: rgba(28, 18, 12, 0.92) !important;
+  border-color: #ea580c !important;
+  box-shadow: 0 0 18px rgba(234, 88, 12, 0.45);
 }
 
 /* Capa de atenuación de profundidad para tarjetas secundarias */

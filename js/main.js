@@ -616,12 +616,10 @@ function renderVideos() {
 
     return `
       <div 
-        class="carousel-3d-card group shadow-md shadow-orange-950/5"
+        class="carousel-3d-card group shadow-md shadow-orange-950/5 cursor-pointer"
         data-video-id="${video.id}"
         data-index="${index}"
         onclick="handleCardClick(${video.id}, ${index}, event)"
-        onmouseenter="this.querySelector('video')?.play().catch(()=>{})"
-        onmouseleave="const v = this.querySelector('video'); if(v){ v.pause(); v.currentTime=0; }"
       >
         <!-- Capa de atenuación de profundidad para tarjetas secundarias -->
         <div class="card-depth-overlay"></div>
@@ -659,18 +657,20 @@ function renderVideos() {
           </div>
         </div>
 
-        <!-- MARCO VERTICAL 9:16 (Preview de Video) -->
+        <!-- MARCO VERTICAL 9:16 (Video en Reproducción Continua Fluida) -->
         <div class="tiktok-frame relative overflow-hidden flex flex-col justify-between p-3 flex-shrink-0">
           <video 
-            class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-45 group-hover:opacity-85 transition-opacity duration-300"
+            class="carousel-video-element absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
             loop 
             muted 
+            autoplay
             playsinline 
+            preload="auto"
             poster="assets/chris-bg-wide.jpg"
             src="${video.videoSrc || ''}"
           ></video>
 
-          <div class="absolute inset-0 bg-gradient-to-b from-black/65 via-transparent to-black/80 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/75 pointer-events-none"></div>
 
           <!-- Header interno del video -->
           <div class="flex items-center justify-between w-full z-10">
@@ -682,12 +682,17 @@ function renderVideos() {
             </span>
           </div>
 
-          <!-- Botón Play central pulsante -->
-          <div class="flex flex-col items-center justify-center text-center my-auto py-2 z-10">
-            <div class="play-btn shadow-2xl group-hover:scale-115 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300 mb-1">
-              <svg class="w-4 h-4 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <!-- Badge Interactivo de Sonido (Click para desmutear sin pausar) -->
+          <div class="video-sound-pill-wrap flex flex-col items-center justify-center text-center my-auto py-2 z-10 pointer-events-none">
+            <div class="sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 text-white border border-white/20 backdrop-blur-md shadow-xl transition-all duration-300">
+              <span class="sound-icon-holder text-sm">🔇</span>
+              <span class="sound-status-text text-[10px] font-heading font-extrabold uppercase tracking-wide text-amber-300">
+                ${currentLang === 'en' ? 'Click to unmute' : 'Click para activar sonido'}
+              </span>
             </div>
-            <span class="text-[9px] text-stone-200 font-heading font-semibold drop-shadow-sm">${currentLang === 'en' ? 'Click to play' : 'Click para reproducir'}</span>
+            <span class="text-[9px] text-stone-300 font-heading font-semibold drop-shadow-sm mt-1">
+              ${currentLang === 'en' ? 'Continuous playback • Never pauses' : 'Reproducción continua • Sin pausas'}
+            </span>
           </div>
 
           <!-- Footer interno del video -->
@@ -708,10 +713,11 @@ function renderVideos() {
 
           <div class="flex items-center justify-between pt-1.5 border-t border-orange-100">
             <button 
-              onclick="event.stopPropagation(); openVideoModal(${video.id})" 
+              type="button"
+              onclick="event.stopPropagation(); handleCardClick(${video.id}, ${index}, event)" 
               class="text-[11px] text-stone-800 hover:text-orange-600 font-heading font-bold flex items-center gap-1 transition-colors group/btn"
             >
-              <span>${currentLang === 'en' ? 'Watch demo' : 'Ver demo'}</span>
+              <span>${currentLang === 'en' ? 'Toggle sound' : 'Alternar audio'}</span>
               <svg class="w-3 h-3 text-orange-600 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
 
@@ -735,21 +741,67 @@ function renderVideos() {
   // Reconfigurar scroll horizontal y posicionamiento 3D
   activeCarouselStep = 0;
   setupHorizontalScroll();
+  ensureCarouselVideosPlaying();
   if (window.lucide) window.lucide.createIcons();
 }
 
-window.handleCardClick = function(id, index, event) {
-  if (event.target.closest('a') || event.target.closest('button')) return;
+/**
+ * Actualiza la apariencia visual del botón de sonido en la tarjeta.
+ */
+function updateCardSoundUI(card, isUnmuted) {
+  if (!card) return;
+  const iconHolder = card.querySelector(".sound-icon-holder");
+  const textHolder = card.querySelector(".sound-status-text");
+  const badge = card.querySelector(".sound-toggle-badge");
+  if (!iconHolder || !textHolder || !badge) return;
 
-  if (window.innerWidth >= 768) {
-    const cards = document.querySelectorAll("#carousel-track .carousel-3d-card");
-    const clickedCard = cards[index];
-    if (clickedCard && !clickedCard.classList.contains("is-center-active")) {
-      event.preventDefault();
-      scrollToVideoIndex(index);
-      return;
-    }
+  if (isUnmuted) {
+    iconHolder.innerHTML = `
+      <span class="inline-flex items-center gap-0.5 mr-0.5">
+        <span class="w-1 h-3 bg-orange-400 animate-pulse rounded-full"></span>
+        <span class="w-1 h-4 bg-orange-500 animate-pulse rounded-full"></span>
+        <span class="w-1 h-2 bg-amber-400 animate-pulse rounded-full"></span>
+      </span>
+      <span>🔊</span>
+    `;
+    textHolder.textContent = currentLang === 'en' ? 'Sound On • Click to mute' : 'Sonido activo • Click para silenciar';
+    badge.className = "sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/90 text-white border-2 border-orange-500 shadow-xl shadow-orange-500/25 backdrop-blur-md transition-all duration-300 scale-105";
+  } else {
+    iconHolder.innerHTML = `🔇`;
+    textHolder.textContent = currentLang === 'en' ? 'Click to unmute' : 'Click para activar sonido';
+    badge.className = "sound-toggle-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md shadow-xl transition-all duration-300";
   }
+}
+
+/**
+ * Garantiza que todos los videos del carrusel se estén reproduciendo continuamente en bucle.
+ */
+function ensureCarouselVideosPlaying() {
+  const vids = document.querySelectorAll("#carousel-track video");
+  vids.forEach(v => {
+    if (v.paused) {
+      const card = v.closest('.carousel-3d-card');
+      if (!card || !card.classList.contains('is-video-unmuted')) {
+        v.muted = true;
+      }
+      const p = v.play();
+      if (p !== undefined) {
+        p.catch(() => {});
+      }
+    }
+  });
+}
+
+/**
+ * Manejador de click en las tarjetas de video:
+ * Al estar al frente y darle clic, el video se desmutea y sigue exactamente por donde iba (sin pausarse).
+ */
+window.handleCardClick = function(id, index, event) {
+  if (event.target.closest('a')) return;
+
+  const cards = document.querySelectorAll("#carousel-track .carousel-3d-card");
+  const clickedCard = cards[index];
+  if (!clickedCard) return;
 
   const video = portfolioVideos.find(v => v.id === id);
   if (video && video.isPendingCard) {
@@ -760,7 +812,62 @@ window.handleCardClick = function(id, index, event) {
     return;
   }
 
-  openVideoModal(id);
+  // Si no está centrado en desktop, centrarlo primero
+  if (window.innerWidth >= 768) {
+    if (!clickedCard.classList.contains("is-center-active")) {
+      event.preventDefault();
+      scrollToVideoIndex(index);
+      return;
+    }
+  }
+
+  // DESMUTEAR / MUTEAR SIN PAUSAR EL VIDEO (Continúa exactamente por donde va)
+  const videoEl = clickedCard.querySelector("video");
+  if (videoEl) {
+    if (videoEl.muted) {
+      // 1. Silenciar cualquier otro video del carrusel
+      document.querySelectorAll("#carousel-track video").forEach(v => {
+        if (v !== videoEl) {
+          v.muted = true;
+        }
+      });
+      document.querySelectorAll("#carousel-track .carousel-3d-card").forEach(c => {
+        if (c !== clickedCard) {
+          c.classList.remove("is-video-unmuted");
+          updateCardSoundUI(c, false);
+        }
+      });
+
+      // 2. Desmutear y mantener reproducción continua (sin pausar ni alterar currentTime)
+      videoEl.muted = false;
+      videoEl.volume = 1.0;
+      if (videoEl.paused) {
+        videoEl.play().catch(() => {});
+      }
+
+      clickedCard.classList.add("is-video-unmuted");
+      updateCardSoundUI(clickedCard, true);
+
+      // 3. Atenuar suavemente la música de fondo de la web
+      duckBgMusic(350);
+
+      if (typeof playUiSound === "function") {
+        playUiSound("pop");
+      }
+    } else {
+      // Re-silenciar el video sin pausarlo
+      videoEl.muted = true;
+      clickedCard.classList.remove("is-video-unmuted");
+      updateCardSoundUI(clickedCard, false);
+
+      // Restaurar música de fondo ambiental
+      restoreBgMusic(500);
+
+      if (typeof playUiSound === "function") {
+        playUiSound("chip");
+      }
+    }
+  }
 };
 
 window.scrollToCarouselStep = function(step) {
@@ -830,6 +937,24 @@ function update3DCarousel(scrollHProgress) {
 
   const activeIntIndex = Math.min(Math.round(activeFloatIndex), count - 1);
   if (window._lastActiveVideoIndex !== undefined && window._lastActiveVideoIndex !== activeIntIndex) {
+    // Si cambió la tarjeta activa, silenciar las tarjetas que ya no están al frente
+    cards.forEach((c, idx) => {
+      if (idx !== activeIntIndex) {
+        const v = c.querySelector("video");
+        if (v && !v.muted) {
+          v.muted = true;
+          c.classList.remove("is-video-unmuted");
+          updateCardSoundUI(c, false);
+        }
+      }
+    });
+
+    // Si ninguna tarjeta quedó desmuteada, restaurar la música de fondo ambiental
+    const hasUnmuted = Array.from(cards).some(c => c.classList.contains("is-video-unmuted"));
+    if (!hasUnmuted && soundEnabled) {
+      restoreBgMusic(400);
+    }
+
     if (typeof playUiSound === "function") {
       playUiSound("video-scroll");
     }
@@ -1063,6 +1188,11 @@ function setupHorizontalScroll() {
     }
 
     const p = currentProgress;
+
+    // Al comenzar a transicionar o acercarse al escenario de videos, asegurar reproducción activa continua
+    if (p >= 0.02) {
+      ensureCarouselVideosPlaying();
+    }
 
     // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS, NUNCA SE SEPARAN)
     if (archGroup) {
@@ -1780,6 +1910,10 @@ function restoreBgMusic(duration = 750) {
   const isVideoPlaying = player && !player.paused && !player.muted && player.currentTime > 0;
   if (isVideoPlaying) return;
 
+  // Verificar si hay algún video del carrusel desmuteado sonando activamente
+  const unmutedCardVideo = document.querySelector("#carousel-track .carousel-3d-card.is-video-unmuted video");
+  if (unmutedCardVideo && !unmutedCardVideo.muted && !unmutedCardVideo.paused) return;
+
   fadeBgMusicTo(DEFAULT_BG_VOLUME, duration);
 }
 
@@ -2297,12 +2431,26 @@ function setupVideoSectionDuckObserver() {
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      // Cuando la sección deja de ser visible (el usuario pasa la lista de videos)
-      if (!entry.isIntersecting) {
+      if (entry.isIntersecting) {
+        // En cuanto la sección de videos se aproxima o entra a pantalla, asegurar que ya anden reproduciendo
+        ensureCarouselVideosPlaying();
+      } else {
+        // Cuando el usuario pasa de largo la lista de videos (scrollea fuera de la sección):
+        // 1. Silenciar cualquier video del carrusel que haya quedado desmuteado
+        const vids = document.querySelectorAll("#carousel-track video");
+        vids.forEach(v => { v.muted = true; });
+        document.querySelectorAll("#carousel-track .carousel-3d-card").forEach(c => {
+          c.classList.remove("is-video-unmuted");
+          updateCardSoundUI(c, false);
+        });
+
+        // 2. Cerrar cualquier modal
         const dialog = document.getElementById("video-dialog");
         if (dialog && dialog.open) {
           closeVideoModal();
         }
+
+        // 3. Restaurar suavemente la música ambiental de fondo
         if (soundEnabled) {
           restoreBgMusic();
         }

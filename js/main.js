@@ -637,60 +637,60 @@ function renderVideos() {
           <div class="card-depth-overlay"></div>
 
           <!-- HEADER: LIMPIO, ELEGANTE Y ARMONIOSO (CERO SATURACIÓN) -->
-          <div class="pending-collabs-header px-3.5 py-3 flex items-center justify-between flex-shrink-0">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
-                <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <div class="pending-collabs-header px-3 py-2 sm:px-3.5 sm:py-2.5 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
               </div>
               <div class="min-w-0 text-left">
                 <h4 class="font-heading font-black text-xs sm:text-sm text-[#1c120c] leading-tight truncate">
                   ${currentLang === 'en' ? 'Upcoming Collabs' : 'Próximas Collabs'}
                 </h4>
-                <span class="text-[9.5px] text-stone-500 font-heading font-semibold block truncate leading-tight">
+                <span class="text-[9px] sm:text-[9.5px] text-stone-500 font-heading font-semibold block truncate leading-tight">
                   ${currentLang === 'en' ? 'Official alliances in production' : 'Alianzas oficiales en producción'}
                 </span>
               </div>
             </div>
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-heading font-extrabold bg-orange-100/80 text-orange-800 border border-orange-200 shadow-2xs flex-shrink-0">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8.5px] sm:text-[9px] font-heading font-extrabold bg-orange-100/80 text-orange-800 border border-orange-200 shadow-2xs flex-shrink-0">
               <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
               <span>${currentLang === 'en' ? '3 Stores' : '3 Tiendas'}</span>
             </span>
           </div>
 
           <!-- CUERPO DE LA TARJETA: 3 MARCAS ELEGANTES Y LEGIBLES -->
-          <div class="pending-collabs-body flex-grow p-3 flex flex-col justify-between gap-2.5 overflow-hidden">
+          <div class="pending-collabs-body flex-grow p-2 sm:p-3 flex flex-col justify-between gap-1.5 sm:gap-2.5 overflow-y-auto">
             ${video.pendingBrands.map(brand => `
-              <div class="pending-brand-card p-3 rounded-2xl flex flex-col justify-between flex-1 group/brand">
+              <div class="pending-brand-card p-2 sm:p-2.5 rounded-xl sm:rounded-2xl flex flex-col justify-between flex-1 min-h-0 group/brand">
                 <!-- Fila 1: Logo, Nombre, Categoría y Badge de Estado -->
-                <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-9 h-9 rounded-xl p-1 flex items-center justify-center flex-shrink-0 border border-stone-200 bg-white shadow-2xs group-hover/brand:scale-105 transition-transform">
+                <div class="flex items-center justify-between gap-1.5">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl p-0.5 sm:p-1 flex items-center justify-center flex-shrink-0 border border-stone-200 bg-white shadow-2xs group-hover/brand:scale-105 transition-transform">
                       <img src="${brand.logoSrc}" alt="Logo ${brand.name}" class="w-full h-full object-contain">
                     </div>
                     <div class="min-w-0 text-left leading-tight">
-                      <div class="font-heading font-black text-xs text-[#1c120c] truncate flex items-center gap-1">
+                      <div class="font-heading font-black text-[11px] sm:text-xs text-[#1c120c] truncate flex items-center gap-1">
                         <span>${brand.name}</span>
-                        <svg class="w-3.5 h-3.5 text-blue-500 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <svg class="w-3 h-3 text-blue-500 fill-current flex-shrink-0" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                       </div>
-                      <span class="text-[9.5px] text-stone-500 font-heading font-medium truncate block">
+                      <span class="text-[8.5px] sm:text-[9.5px] text-stone-500 font-heading font-medium truncate block">
                         ${currentLang === 'en' && brand.tag_en ? brand.tag_en : brand.tag}
                       </span>
                     </div>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[8.5px] font-heading font-bold uppercase px-2 py-0.5 rounded-full border shadow-2xs flex-shrink-0 ${brand.badgeClass}">
+                  <span class="inline-flex items-center gap-1 text-[7.5px] sm:text-[8.5px] font-heading font-bold uppercase px-1.5 py-0.5 rounded-full border shadow-2xs flex-shrink-0 ${brand.badgeClass}">
                     <span class="w-1 h-1 rounded-full ${brand.badgeDot} animate-pulse"></span>
                     <span>${currentLang === 'en' && brand.badge_en ? brand.badge_en : brand.badge}</span>
                   </span>
                 </div>
 
                 <!-- Fila 2: Descripción breve -->
-                <p class="text-[9.5px] text-stone-600 font-heading font-medium leading-relaxed my-1 text-left">
+                <p class="text-[8.5px] sm:text-[9.5px] text-stone-600 font-heading font-medium leading-tight my-0.5 sm:my-1 text-left line-clamp-2">
                   ${currentLang === 'en' && brand.desc_en ? brand.desc_en : brand.desc}
                 </p>
 
                 <!-- Fila 3: Footer con Campaña Oficial y Enlace Limpio -->
-                <div class="flex items-center justify-between pt-1.5 border-t border-stone-100 text-left mt-auto">
-                  <span class="text-[8.5px] text-stone-500 font-heading font-semibold flex items-center gap-1">
+                <div class="flex items-center justify-between pt-1 border-t border-stone-100 text-left mt-auto">
+                  <span class="text-[8px] sm:text-[8.5px] text-stone-500 font-heading font-semibold flex items-center gap-1">
                     <span class="w-1 h-1 rounded-full bg-orange-500"></span>
                     <span>${currentLang === 'en' ? 'Official campaign' : 'Campaña oficial'}</span>
                   </span>
@@ -699,7 +699,7 @@ function renderVideos() {
                     target="_blank" 
                     rel="noopener noreferrer" 
                     onclick="event.stopPropagation()"
-                    class="inline-flex items-center gap-1 text-[9.5px] font-heading font-bold text-orange-600 hover:text-orange-700 transition-colors group-hover/brand:translate-x-0.5 transition-transform"
+                    class="inline-flex items-center gap-1 text-[8.5px] sm:text-[9.5px] font-heading font-bold text-orange-600 hover:text-orange-700 transition-colors group-hover/brand:translate-x-0.5 transition-transform"
                   >
                     <span>${currentLang === 'en' ? 'Official website' : 'Sitio oficial'}</span>
                     <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -710,22 +710,22 @@ function renderVideos() {
           </div>
 
           <!-- FOOTER: ELEGANTE Y CÁLIDO -->
-          <div class="pending-collabs-footer p-3 px-4 flex items-center justify-between flex-shrink-0">
+          <div class="pending-collabs-footer py-2 px-3 sm:py-2.5 sm:px-4 flex items-center justify-between flex-shrink-0">
             <div class="text-left leading-tight">
-              <span class="text-[9px] font-heading font-semibold text-stone-500 block">
+              <span class="text-[8.5px] sm:text-[9px] font-heading font-semibold text-stone-500 block">
                 ${currentLang === 'en' ? 'Got a store or project?' : '¿Tienes una tienda o proyecto?'}
               </span>
-              <span class="text-xs font-heading font-black text-[#1c120c] block">
+              <span class="text-[11px] sm:text-xs font-heading font-black text-[#1c120c] block">
                 ${currentLang === 'en' ? 'Add your brand to the list' : 'Suma tu marca a la lista'}
               </span>
             </div>
             <a 
               href="#contacto" 
               onclick="event.stopPropagation()"
-              class="btn-shimmer py-2 px-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-heading font-extrabold text-[11px] tracking-wide shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-1 flex-shrink-0"
+              class="btn-shimmer py-1.5 px-3 sm:py-2 sm:px-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-heading font-extrabold text-[10px] sm:text-[11px] tracking-wide shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center gap-1 flex-shrink-0"
             >
               <span>${currentLang === 'en' ? 'Contact' : 'Contactar'}</span>
-              <svg class="w-3 h-3 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3 gang-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
           </div>
 

@@ -273,7 +273,7 @@ const portfolioVideos = [
     title: "Showcase de armas Godlys más baratas y proceso de entrega rápida",
     title_en: "Cheapest MM2 Godlys weapons showcase & fast delivery process",
     format: "Shorts 9:16",
-    logoSrc: "assets/mm2shop-logo.png",
+    logoHtml: `<div class="w-full h-full rounded-lg bg-[#0c0a09] border border-red-600/50 flex items-center justify-center select-none font-heading font-black tracking-tight text-white leading-none shadow-xs"><span class="text-[10px]">MM</span><span class="text-red-500 text-[12px] font-black ml-0.5 transform -translate-y-px">2</span></div>`,
     driveLink: "https://drive.google.com/file/d/1R0I9pTIvSSPnb5msRJ8iOEZT6HLmw1qN/view?usp=drivesdk",
     videoSrc: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
   },
@@ -623,8 +623,8 @@ function renderVideos() {
         <div class="brand-badge-header px-3.5 py-2.5 flex items-center justify-between border-b border-orange-100/90 flex-shrink-0">
           <!-- Logo Real y Nombre de Marca -->
           <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-9 h-9 rounded-xl p-1.5 flex items-center justify-center flex-shrink-0 border border-stone-200/90 bg-white shadow-2xs group-hover:scale-105 transition-transform">
-              <img src="${video.logoSrc}" alt="Logo ${video.site}" class="w-full h-full object-contain">
+            <div class="w-9 h-9 rounded-xl p-1 flex items-center justify-center flex-shrink-0 border border-stone-200/90 bg-white shadow-2xs group-hover:scale-105 transition-transform overflow-hidden">
+              ${video.logoHtml ? video.logoHtml : `<img src="${video.logoSrc}" alt="Logo ${video.site}" class="w-full h-full object-contain">`}
             </div>
             <div class="min-w-0 text-left">
               <h4 class="font-heading font-black text-xs sm:text-sm text-[#1c120c] truncate leading-tight">${video.site === 'MM2Shop' ? 'MM<span class="text-red-600 font-black text-[1.08em]">2</span>Shop' : video.site}</h4>

@@ -1734,10 +1734,10 @@ window.copyDiscordUser = function() {
       const origText = textSpan.innerHTML;
       const copiedText = currentLang === "en" ? "Copied: chrixmm2! ✨" : "¡Copiado: chrixmm2! ✨";
       textSpan.innerHTML = copiedText;
-      if (copyBtn) copyBtn.classList.add("copy-success-pulse", "bg-emerald-600/30", "border-emerald-500/50", "text-emerald-300");
+      if (copyBtn) copyBtn.classList.add("copy-success-pulse", "bg-emerald-100", "border-emerald-300", "text-emerald-800");
       setTimeout(() => {
         textSpan.innerHTML = origText;
-        if (copyBtn) copyBtn.classList.remove("copy-success-pulse", "bg-emerald-600/30", "border-emerald-500/50", "text-emerald-300");
+        if (copyBtn) copyBtn.classList.remove("copy-success-pulse", "bg-emerald-100", "border-emerald-300", "text-emerald-800");
       }, 2200);
     }
   };

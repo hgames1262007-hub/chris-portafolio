@@ -504,10 +504,11 @@ function setupSmoothScroll() {
   document.documentElement.classList.add("lenis");
 
   const lenis = new Lenis({
-    lerp: 0.12, // Rápido, ágil y sedoso: responde al instante sin retrasar el scroll de la página
+    lerp: 0.12, // Rápido, ágil y sedoso en PC
     wheelMultiplier: 1.0,
-    touchMultiplier: 1.0,
+    touchMultiplier: 0, // En móvil permite scroll táctil nativo a 120Hz sin retardo
     smoothWheel: true,
+    syncTouch: false,
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     infinite: false,
@@ -649,6 +650,7 @@ function animateMobileToIndex(targetIndex) {
   const fromIndex = mobileCurrentFloat;
   mobileActiveIndex = targetIndex;
   updateMobileDots(targetIndex);
+  updateActiveCarouselVideo(targetIndex);
 
   if (Math.abs(fromIndex - targetIndex) < 0.01) {
     mobileCurrentFloat = targetIndex;
@@ -842,9 +844,8 @@ function renderVideos() {
             class="carousel-video-element absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-300"
             loop 
             muted 
-            autoplay
             playsinline 
-            preload="auto"
+            preload="metadata"
             src="${video.videoSrc || ''}"
           ></video>
 
@@ -868,7 +869,7 @@ function renderVideos() {
     updateMobileDots(0);
     update3DCarousel(0);
   }
-  ensureCarouselVideosPlaying();
+  updateActiveCarouselVideo(0);
   if (window.lucide) window.lucide.createIcons();
 }
 
@@ -899,22 +900,49 @@ function updateCardSoundUI(card, isUnmuted) {
 }
 
 /**
- * Garantiza que todos los videos del carrusel se estén reproduciendo continuamente en bucle.
+ * Control ultra-eficiente de reproducción de videos del carrusel:
+ * Solo reproduce el video que está visible al frente en el centro (targetIndex).
+ * Todos los demás videos se pausan para liberar el decodificador de hardware, CPU y GPU (0% lag).
  */
-function ensureCarouselVideosPlaying() {
-  const vids = document.querySelectorAll("#carousel-track video");
-  vids.forEach(v => {
-    if (v.paused) {
-      const card = v.closest('.carousel-3d-card');
-      if (!card || !card.classList.contains('is-video-unmuted')) {
-        v.muted = true;
+function updateActiveCarouselVideo(targetIndex) {
+  const cards = document.querySelectorAll("#carousel-track .carousel-3d-card");
+  if (!cards.length) return;
+
+  cards.forEach((card, idx) => {
+    const v = card.querySelector("video");
+    if (!v) return;
+
+    if (idx === targetIndex) {
+      if (v.paused) {
+        if (!card.classList.contains('is-video-unmuted')) {
+          v.muted = true;
+        }
+        const p = v.play();
+        if (p !== undefined) p.catch(() => {});
       }
-      const p = v.play();
-      if (p !== undefined) {
-        p.catch(() => {});
+    } else {
+      if (!v.paused) {
+        v.pause();
       }
     }
   });
+}
+
+/**
+ * Pausa todos los videos del carrusel para eliminar uso de CPU/GPU cuando no están en pantalla.
+ */
+function pauseAllCarouselVideos() {
+  const vids = document.querySelectorAll("#carousel-track video");
+  vids.forEach(v => {
+    v.muted = true;
+    if (!v.paused) v.pause();
+  });
+}
+
+function ensureCarouselVideosPlaying() {
+  const isMobile = window.innerWidth < 768;
+  const currentIdx = isMobile ? mobileActiveIndex : (window._lastActiveVideoIndex || 0);
+  updateActiveCarouselVideo(currentIdx);
 }
 
 /**
@@ -1070,7 +1098,7 @@ function update3DCarousel(scrollHProgress) {
   const activeFloatIndex = count > 1 ? scrollHProgress * (count - 1) : 0;
 
   const activeIntIndex = Math.min(Math.round(activeFloatIndex), count - 1);
-  if (window._lastActiveVideoIndex !== undefined && window._lastActiveVideoIndex !== activeIntIndex) {
+  if (window._lastActiveVideoIndex !== activeIntIndex) {
     // Si cambió la tarjeta activa, silenciar las tarjetas que ya no están al frente
     cards.forEach((c, idx) => {
       if (idx !== activeIntIndex) {
@@ -1083,13 +1111,16 @@ function update3DCarousel(scrollHProgress) {
       }
     });
 
+    // Reproducir ÚNICAMENTE el video que quedó en el centro al frente, y pausar los demás
+    updateActiveCarouselVideo(activeIntIndex);
+
     // Si ninguna tarjeta quedó desmuteada, restaurar la música de fondo ambiental
     const hasUnmuted = Array.from(cards).some(c => c.classList.contains("is-video-unmuted"));
     if (!hasUnmuted && soundEnabled) {
       restoreBgMusic(400);
     }
 
-    if (typeof playUiSound === "function") {
+    if (window._lastActiveVideoIndex !== undefined && typeof playUiSound === "function") {
       playUiSound("video-scroll");
     }
   }
@@ -1310,9 +1341,14 @@ function setupHorizontalScroll() {
     const p = currentProgress;
     const isMobile = window.innerWidth < 768;
 
-    // Al comenzar a transicionar o acercarse al escenario de videos, asegurar reproducción activa continua
-    if (p >= 0.02) {
-      ensureCarouselVideosPlaying();
+    // Control de activación / desactivación eficiente: solo cambia de estado cuando cruza el límite
+    if (p >= 0.02 && !window._videoSectionActive) {
+      window._videoSectionActive = true;
+      const curIdx = isMobile ? mobileActiveIndex : (window._lastActiveVideoIndex || 0);
+      updateActiveCarouselVideo(curIdx);
+    } else if (p < 0.01 && window._videoSectionActive) {
+      window._videoSectionActive = false;
+      pauseAllCarouselVideos();
     }
 
     // 1. ZOOM Y APERTURA DEL GRUPO DE CAPAS (SE MANTIENEN 100% UNIDAS Y SÓLIDAS)
@@ -2828,13 +2864,14 @@ function setupVideoSectionDuckObserver() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // En cuanto la sección de videos se aproxima o entra a pantalla, asegurar que ya anden reproduciendo
-        ensureCarouselVideosPlaying();
+        // En cuanto la sección de videos entra a pantalla, activar únicamente el video visible al frente
+        const isMobile = window.innerWidth < 768;
+        const currentIdx = isMobile ? mobileActiveIndex : (window._lastActiveVideoIndex || 0);
+        updateActiveCarouselVideo(currentIdx);
       } else {
         // Cuando el usuario pasa de largo la lista de videos (scrollea fuera de la sección):
-        // 1. Silenciar cualquier video del carrusel que haya quedado desmuteado
-        const vids = document.querySelectorAll("#carousel-track video");
-        vids.forEach(v => { v.muted = true; });
+        // 1. Pausar y silenciar TODOS los videos para dejar en 0% la carga de GPU/CPU
+        pauseAllCarouselVideos();
         document.querySelectorAll("#carousel-track .carousel-3d-card").forEach(c => {
           c.classList.remove("is-video-unmuted");
           updateCardSoundUI(c, false);
